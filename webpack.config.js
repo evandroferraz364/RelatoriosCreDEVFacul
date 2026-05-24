@@ -39,12 +39,12 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/
       },
       {
-        test: /\.s[ac]ss$/i,
+        test: /\\.s[ac]ss$/i,
         use: [
           isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
           'css-loader',
@@ -52,14 +52,14 @@ module.exports = {
         ]
       },
       {
-        test: /\.css$/i,
+        test: /\\.css$/i,
         use: [
           isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
           'css-loader'
         ]
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        test: /\\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset',
         parser: {
           dataUrlCondition: {
@@ -71,7 +71,7 @@ module.exports = {
         }
       },
       {
-        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        test: /\\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
         generator: {
           filename: 'fonts/[name].[hash:8][ext]'
@@ -98,7 +98,7 @@ module.exports = {
       chunks: 'all',
       cacheGroups: {
         vendor: {
-          test: /[\\/]node_modules[\\/]/,
+          test: /[\\\\/]node_modules[\\\\/]/,
           name: 'vendors',
           priority: 10,
           reuseExistingChunk: true
@@ -132,13 +132,13 @@ module.exports = {
         cleanupOutdatedCaches: true,
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/cdnjs\.cloudflare\.com/,
+            urlPattern: /^https:\\/\\/cdnjs\\.cloudflare\\.com/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'cdn-cache',
               expiration: {
                 maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 dias
+                maxAgeSeconds: 60 * 60 * 24 * 30
               }
             }
           }
