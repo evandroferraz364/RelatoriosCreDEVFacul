@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Relatório de Impulsionamento | Meta Ads</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon_32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon_64.png">
+<link rel="icon" type="image/png" sizes="256x256" href="favicon_256.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#0f0f0f;color:#e5e5e5;min-height:100vh}
+header{background:#0f0f0f;border-bottom:1px solid #262626;position:sticky;top:0;z-index:50;padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{background:#ff9900;padding:6px;border-radius:4px;display:flex;align-items:center;justify-content:center}
+.logo-icon svg{width:18px;height:18px;fill:white}
+.logo h1{font-size:18px;font-weight:700;color:#fff}
+.logo h1 span{color:#ff9900}
+.header-btns{display:flex;gap:10px}
+.btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:6px;font-size:13px;cursor:pointer;border:none;font-weight:500;transition:all .2s}
+.btn-excel{background:#15803d;color:#fff;border:1px solid #16a34a}.btn-excel:hover{background:#16a34a}
+.btn-pdf{background:#262626;color:#fff;border:1px solid #404040}.btn-pdf:hover{background:#333}
+.btn-back{background:transparent;color:#9ca3af;border:none;font-size:13px;cursor:pointer;text-decoration:underline;padding:4px 0}.btn-back:hover{color:#fff}
+main{max-width:1400px;margin:0 auto;padding:32px 24px}
+.upload-wrap{max-width:600px;margin:48px auto}
+.upload-card{background:#262626;border-radius:16px;border:2px dashed #404040;padding:48px;text-align:center}
+.upload-icon{width:72px;height:72px;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.upload-icon svg{width:36px;height:36px;fill:#ff9900}
+.upload-card h2{font-size:22px;font-weight:700;margin-bottom:8px}
+.upload-card p{color:#9ca3af;margin-bottom:28px;font-size:14px}
+.btn-upload{background:#ff9900;color:#fff;border:none;padding:12px 32px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s}.btn-upload:hover{background:#e68900;transform:scale(1.03)}
+.error{margin-top:20px;background:rgba(153,27,27,.4);border:1px solid #991b1b;color:#fca5a5;padding:12px 16px;border-radius:8px;font-size:13px;display:flex;align-items:center;gap:8px}
+.instructions{margin-top:24px;background:rgba(0,0,0,.3);border:1px solid #333;border-radius:8px;padding:16px;text-align:left;font-size:13px;color:#6b7280}
+.instructions strong{color:#9ca3af;display:block;margin-bottom:8px}
+.instructions ul{padding-left:20px;line-height:1.8}
+.instructions code{background:#1a1a1a;padding:2px 6px;border-radius:4px;font-size:12px;color:#ff9900}
+#reviewArea{display:none}
+.review-card{background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:24px;margin-bottom:16px}
+.review-card h2{font-size:20px;font-weight:700;margin-bottom:4px}
+.review-card>p{color:#9ca3af;font-size:13px;margin-bottom:20px}
+.review-table{width:100%;border-collapse:collapse;font-size:13px}
+.review-table th{text-align:left;padding:10px 12px;border-bottom:1px solid #333;color:#9ca3af;font-weight:600;font-size:11px;text-transform:uppercase}
+.review-table td{padding:10px 12px;border-bottom:1px solid #222}
+.review-table tr:hover{background:#222}
+.review-name{color:#fff;font-weight:500;max-width:300px;word-break:break-word}
+.review-format{color:#9ca3af}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;text-transform:uppercase;white-space:nowrap}
+.badge-alc{background:rgba(59,130,246,.2);color:#93c5fd;border:1px solid rgba(59,130,246,.3)}
+.badge-eng{background:rgba(168,85,247,.2);color:#d8b4fe;border:1px solid rgba(168,85,247,.3)}
+.badge-eng-link{background:rgba(168,85,247,.15);color:#c4b5fd;border:1px solid rgba(168,85,247,.25)}
+.badge-conv{background:rgba(34,197,94,.2);color:#86efac;border:1px solid rgba(34,197,94,.3)}
+.badge-conv-link{background:rgba(34,197,94,.15);color:#6ee7b7;border:1px solid rgba(34,197,94,.25)}
+.badge-whatseng{background:rgba(34,197,94,.2);color:#a7f3d0;border:1px solid rgba(34,197,94,.35)}
+.badge-views{background:rgba(251,146,60,.2);color:#fed7aa;border:1px solid rgba(251,146,60,.3)}
+.badge-unknown{background:rgba(239,68,68,.2);color:#fca5a5;border:1px solid rgba(239,68,68,.3)}
+.obj-select{background:#262626;color:#e5e5e5;border:1px solid #404040;border-radius:6px;padding:5px 8px;font-size:12px;cursor:pointer}.obj-select:focus{border-color:#ff9900;outline:none}
+.btn-generate{background:#ff9900;color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:16px}.btn-generate:hover{background:#e68900;transform:scale(1.02)}
+.review-actions{display:flex;gap:12px;align-items:center;margin-top:8px}
+.review-stats{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.stat-chip{padding:5px 12px;border-radius:8px;font-size:11px;font-weight:600}
+#capaArea{display:none}
+.capa-card{background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:24px}
+.capa-card h2{font-size:20px;font-weight:700;margin-bottom:4px}
+.capa-card>p{color:#9ca3af;font-size:13px;margin-bottom:24px}
+.capa-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:700px){.capa-grid{grid-template-columns:1fr}}
+.capa-section{background:#262626;border-radius:10px;padding:20px;border:1px solid #333}
+.capa-section h3{font-size:15px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.capa-section h3 .icon-fb{color:#1877f2}.capa-section h3 .icon-ig{color:#e4405f}
+.capa-field{margin-bottom:14px}
+.capa-field label{display:block;font-size:12px;color:#9ca3af;margin-bottom:4px;font-weight:600;text-transform:uppercase}
+.capa-field input{width:100%;background:#1a1a1a;border:1px solid #404040;border-radius:6px;padding:8px 12px;color:#fff;font-size:14px;font-family:inherit}.capa-field input:focus{border-color:#ff9900;outline:none}
+.capa-field input::placeholder{color:#555}
+.capa-actions{display:flex;gap:12px;align-items:center;margin-top:20px}
+#capaPreview{display:none;margin-top:28px}
+.capa-preview-box{background:#FBBC04;border-radius:12px;padding:24px;font-family:'Montserrat','Segoe UI',sans-serif;color:#000;box-shadow:0 8px 32px rgba(251,188,4,.25);border:2px solid #e0a800}
+.capa-preview-title{font-size:22px;font-weight:900;text-align:center;color:#fff;background:rgba(0,0,0,.15);border-radius:8px;padding:10px 16px;margin-bottom:20px;letter-spacing:.5px;word-break:break-word}
+.capa-preview-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.capa-preview-cols{grid-template-columns:1fr}}
+.capa-preview-col{background:rgba(255,255,255,.18);border-radius:10px;padding:16px;border:1px solid rgba(0,0,0,.08)}
+.capa-preview-col-title{font-size:14px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.5px}
+.capa-preview-seg{font-size:18px;font-weight:700;text-align:center;padding:8px;background:rgba(255,255,255,.25);border-radius:6px;margin-bottom:6px}
+.capa-preview-seg-ant{font-size:12px;text-align:center;color:rgba(0,0,0,.65);margin-bottom:12px;font-style:italic}
+.capa-preview-genero{display:flex;justify-content:center;gap:20px;margin-bottom:12px}
+.capa-preview-genero span{font-size:14px;font-weight:700;background:rgba(255,255,255,.3);padding:4px 12px;border-radius:20px}
+.capa-preview-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px}
+.capa-preview-metric{text-align:center;background:rgba(255,255,255,.25);border-radius:6px;padding:6px 4px}
+.capa-preview-metric .val{font-size:16px;font-weight:800;display:block}
+.capa-preview-metric .lbl{font-size:9px;font-weight:600;text-transform:uppercase;color:rgba(0,0,0,.6);line-height:1.2;margin-top:2px;display:block}
+.report-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.report-header h2{font-size:22px;font-weight:700}
+.report-header p{color:#9ca3af;font-size:13px;margin-top:2px}
+.table-wrap{background:#fff;border-radius:8px;overflow:hidden;border:1px solid #000;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.table-title{background:#ff9900;color:#fff;text-align:center;padding:8px;font-weight:700;font-size:15px;letter-spacing:.5px;border-bottom:1px solid #000}
+.table-scroll{overflow-x:auto}
+table.report{width:100%;border-collapse:collapse;color:#000;font-size:10.5px}
+table.report thead tr{background:#b7b7b7}
+table.report th{padding:7px 5px;font-weight:700;font-size:9.5px;text-transform:uppercase;border-right:1px solid #000;border-bottom:1px solid #000;text-align:center;white-space:nowrap;font-family:'Century Gothic',Arial}
+table.report th:first-child{text-align:left}
+table.report td{padding:6px 5px;border-right:1px solid #d1d5db;border-bottom:1px solid #d1d5db;text-align:center;background:#fff;white-space:nowrap}
+table.report td:first-child{text-align:left;white-space:normal;min-width:180px}
+.legend{background:#fff;border:1px solid #000;padding:16px;margin-top:24px;color:#000;border-radius:4px}
+.legend-title{background:#ff9900;color:#fff;font-weight:700;text-align:center;padding:6px;margin:-16px -16px 16px;border-radius:4px 4px 0 0;font-size:13px;font-family:'Century Gothic',Arial}
+.legend p{font-size:13px;margin-bottom:10px;line-height:1.6}
+.legend-note{font-size:11px;color:#6b7280;border-top:1px solid #ddd;padding-top:10px;margin-top:10px}
+@media print{header,#headerBtns,.btn-back{display:none!important}body{background:#fff;color:#000}main{padding:0}}
+.config-panel{margin-top:18px;padding:16px;border:1px solid #262626;border-radius:12px;background:#171717}
+.config-panel summary{cursor:pointer;font-weight:700;color:#fff;list-style:none}
+.config-panel summary::-webkit-details-marker{display:none}
+.config-panel summary::after{content:' ▾';color:#ff9900}
+.config-panel[open] summary::after{content:' ▴';color:#ff9900}
+.config-panel p{margin:10px 0 0;color:#a3a3a3;font-size:13px;line-height:1.5}
+.config-textarea{width:100%;min-height:280px;margin-top:14px;background:#0f0f0f;color:#e5e5e5;border:1px solid #404040;border-radius:10px;padding:12px;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;resize:vertical}
+.config-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.btn-secondary{background:#262626;color:#fff;border:1px solid #404040}
+.btn-secondary:hover{background:#333}
+.btn-warning{background:#7c2d12;color:#fff;border:1px solid #9a3412}
+.btn-warning:hover{background:#9a3412}
+.config-status{margin-top:12px;font-size:13px;color:#d4d4d4;min-height:18px}
+.progress-wrap{max-width:1100px;margin:0 auto 24px}
+.progress-steps{display:flex;gap:12px;flex-wrap:wrap}
+.progress-step{flex:1;min-width:180px;background:#171717;border:1px solid #2f2f2f;border-radius:12px;padding:12px 14px;opacity:.55;transition:all .2s}
+.progress-step.active{opacity:1;border-color:#ff9900;box-shadow:0 0 0 1px rgba(255,153,0,.25)}
+.progress-step.done{opacity:1;border-color:#16a34a}
+.progress-step-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#262626;color:#fff;font-size:12px;font-weight:700;margin-bottom:8px}
+.progress-step.active .progress-step-num{background:#ff9900}
+.progress-step.done .progress-step-num{background:#16a34a}
+.progress-step-title{font-size:13px;font-weight:700;color:#fff}
+.progress-step-desc{font-size:11px;color:#9ca3af;margin-top:4px;line-height:1.4}
+.upload-hero{margin-bottom:18px}
+.upload-hero-badge{display:inline-block;background:rgba(255,153,0,.12);color:#ffb84d;border:1px solid rgba(255,153,0,.28);padding:6px 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;margin-bottom:14px}
+.upload-subtext{max-width:520px;margin:0 auto 28px;color:#a3a3a3;font-size:14px;line-height:1.6}
+.dropzone-active{border-color:#ff9900!important;background:rgba(255,153,0,.06)!important;box-shadow:0 0 0 3px rgba(255,153,0,.08)}
+.upload-hint{margin-top:14px;color:#737373;font-size:12px}
+.summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}
+.summary-card{background:#111;border:1px solid #333;border-radius:10px;padding:14px;text-align:left}
+.summary-label{font-size:11px;color:#9ca3af;text-transform:uppercase;font-weight:700;letter-spacing:.4px;margin-bottom:6px}
+.summary-value{font-size:18px;font-weight:800;color:#fff}
+.summary-value.small{font-size:15px;font-weight:700}
+.classification-banner{display:none;margin-top:16px;background:rgba(21,128,61,.10);border:1px solid rgba(21,128,61,.45);border-radius:10px;padding:14px 16px;color:#dcfce7}
+.classification-banner.warn{background:rgba(180,83,9,.12);border-color:rgba(245,158,11,.45);color:#fef3c7}
+.classification-banner strong{display:block;color:#fff;margin-bottom:4px}
+footer{padding:24px 20px;text-align:center;color:#6b7280;font-size:12px}
+@media(max-width:700px){.summary-grid{grid-template-columns:1fr}}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,.9fr);gap:24px;align-items:start}
+.premium-panel{background:linear-gradient(180deg,#171717 0%,#121212 100%);border:1px solid #2c2c2c;border-radius:18px;padding:24px;box-shadow:0 18px 50px rgba(0,0,0,.28)}
+.hero-title{font-size:34px;line-height:1.05;font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:12px}
+.hero-desc{font-size:15px;line-height:1.7;color:#b3b3b3;max-width:680px;margin-bottom:18px}
+.hero-badges{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,153,0,.12);color:#ffd08a;border:1px solid rgba(255,153,0,.22);padding:8px 12px;border-radius:999px;font-size:12px;font-weight:700}
+.hero-upload-card{background:radial-gradient(circle at top, rgba(255,153,0,.07), transparent 40%), #1a1a1a;border:1px solid #333;border-radius:20px;padding:28px}
+.hero-upload-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px}
+.hero-upload-head h2{font-size:24px;font-weight:800;color:#fff;margin-bottom:8px}
+.hero-upload-head p{color:#aaa;line-height:1.6;font-size:14px;max-width:560px}
+.compat-box{background:#111;border:1px solid #2e2e2e;border-radius:14px;padding:14px 16px;margin-top:16px}
+.compat-box-title{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#8f8f8f;font-weight:700;margin-bottom:10px}
+.compat-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.compat-item{background:#161616;border:1px solid #262626;border-radius:12px;padding:12px}
+.compat-item strong{display:block;font-size:13px;color:#fff;margin-bottom:4px}
+.compat-item span{display:block;font-size:12px;color:#979797;line-height:1.45}
+.side-card{background:linear-gradient(180deg,#171717 0%,#121212 100%);border:1px solid #2c2c2c;border-radius:18px;padding:22px}
+.side-card + .side-card{margin-top:18px}
+.side-card h3{font-size:16px;color:#fff;margin-bottom:14px}
+.flow-list{display:grid;gap:10px}
+.flow-item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #232323}
+.flow-item:last-child{border-bottom:none;padding-bottom:0}
+.flow-num{width:28px;height:28px;border-radius:50%;background:#ff9900;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex:none}
+.flow-item strong{display:block;color:#fff;font-size:13px;margin-bottom:2px}
+.flow-item span{display:block;color:#9a9a9a;font-size:12px;line-height:1.45}
+.auto-list{display:grid;gap:10px}
+.auto-pill{display:flex;justify-content:space-between;align-items:center;background:#111;border:1px solid #272727;border-radius:12px;padding:12px 14px;color:#fff;font-size:13px}
+.auto-pill small{color:#8e8e8e}
+.example-card{background:linear-gradient(180deg,rgba(255,153,0,.10),rgba(255,153,0,.03));border:1px solid rgba(255,153,0,.2)}
+.example-file{font-size:13px;color:#ffd08a;margin-bottom:14px;font-weight:700}
+.example-stats{display:grid;gap:10px}
+.example-stat{display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px 14px}
+.example-stat span{color:#b8b8b8;font-size:12px}
+.example-stat strong{color:#fff;font-size:14px}
+@media(max-width:980px){.hero-grid{grid-template-columns:1fr}.hero-title{font-size:28px}}
+@media(max-width:700px){.compat-list{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <img src="favicon_64.png" alt="Logo" style="width:32px;height:32px;border-radius:50%;object-fit:cover">
+    <h1>Relatório de <span>Impulsionamento</span></h1>
+  </div>
+  <div class="header-btns" id="headerBtns" style="display:none">
+    <button class="btn btn-excel" id="btnExcel" onclick="exportExcel()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg> Baixar Excel</button>
+    <button class="btn btn-excel" id="btnGoogleSheets" onclick="exportGoogleSheets()">Google Sheets</button>
+    <button class="btn btn-pdf" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg> PDF</button>
+  </div>
+</header>
+<main id="mainContent">
+  <div class="progress-wrap">
+    <div class="progress-steps" id="progressSteps">
+      <div class="progress-step active" data-step="1">
+        <div class="progress-step-num">1</div>
+        <div class="progress-step-title">Importar planilha</div>
+        <div class="progress-step-desc">Envie o arquivo exportado do Meta Ads.</div>
+      </div>
+      <div class="progress-step" data-step="2">
+        <div class="progress-step-num">2</div>
+        <div class="progress-step-title">Revisar classificação</div>
+        <div class="progress-step-desc">Confira os objetivos detectados automaticamente.</div>
+      </div>
+      <div class="progress-step" data-step="3">
+        <div class="progress-step-num">3</div>
+        <div class="progress-step-title">Preencher capa</div>
+        <div class="progress-step-desc">Complete os dados de Facebook e Instagram.</div>
+      </div>
+      <div class="progress-step" data-step="4">
+        <div class="progress-step-num">4</div>
+        <div class="progress-step-title">Exportar relatório</div>
+        <div class="progress-step-desc">Baixe o Excel final formatado.</div>
+      </div>
+    </div>
+  </div>
+  <!-- UPLOAD -->
+  <div id="uploadArea" class="upload-wrap" style="max-width:1200px;margin:24px auto 0;">
+    <div class="hero-grid">
+      <div class="premium-panel hero-upload-card upload-card" id="uploadDropzone">
+        <div class="hero-badges">
+          <span class="hero-badge">⚡ Classificação automática</span>
+          <span class="hero-badge">📊 Exportação em Excel</span>
+          <span class="hero-badge">🧠 Regras configuráveis por JSON</span>
+        </div>
+        <div class="hero-upload-head">
+          <div>
+            <h1 class="hero-title">Transforme exportações do Meta Ads em relatórios prontos para múltiplos clientes.</h1>
+            <p class="hero-desc">Envie a planilha de qualquer cliente exportada do Meta Ads e deixe o sistema identificar cliente, período, campanhas, formatos e objetivos para acelerar seu fechamento mensal.</p>
+          </div>
+        </div>
+        <div class="upload-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg></div>
+        <div class="upload-hero">
+          <div class="upload-hero-badge">Fluxo guiado</div>
+          <h2>Importe sua planilha do Meta Ads</h2>
+          <p class="upload-subtext">Comece com um arquivo <strong>.xlsx</strong> exportado do Gerenciador de Anúncios. O sistema faz a leitura inicial automaticamente e leva você até a exportação final em poucos passos.</p>
+        </div>
+        <input type="file" id="fileInput" accept=".xlsx,.xls" style="display:none" onchange="handleFile(event)"/>
+        <button class="btn-upload" onclick="document.getElementById('fileInput').click()">Selecionar planilha do Meta Ads</button>
+        <div class="upload-hint">ou arraste e solte o arquivo .xlsx aqui</div>
+        <div class="compat-box">
+          <div class="compat-box-title">Compatibilidade e leitura automática</div>
+          <div class="compat-list">
+            <div class="compat-item">
+              <strong>Arquivo compatível</strong>
+              <span>Exportação em Excel do Meta Ads em formato <code>.xlsx</code>.</span>
+            </div>
+            <div class="compat-item">
+              <strong>Identificação automática</strong>
+              <span>Cliente, período, campanhas, formatos e objetivos são detectados durante o upload.</span>
+            </div>
+          </div>
+        </div>
+        <div id="errorMsg" class="error" style="display:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg><span id="errorText"></span></div>
+        <div id="fileSummary" style="display:none">
+          <div class="summary-grid">
+            <div class="summary-card">
+              <div class="summary-label">Cliente detectado</div>
+              <div class="summary-value small" id="sum_cliente">-</div>
+            </div>
+            <div class="summary-card">
+              <div class="summary-label">Período detectado</div>
+              <div class="summary-value small" id="sum_periodo">-</div>
+            </div>
+            <div class="summary-card">
+              <div class="summary-label">Campanhas encontradas</div>
+              <div class="summary-value" id="sum_campanhas">0</div>
+            </div>
+            <div class="summary-card">
+              <div class="summary-label">Classificação automática</div>
+              <div class="summary-value" id="sum_classificadas">0</div>
+            </div>
+          </div>
+        </div>
+        <div id="classificationBanner" class="classification-banner">
+          <strong>Leitura automática concluída</strong>
+          <span id="classificationBannerText">O sistema já analisou a planilha.</span>
+        </div>
+        <div class="instructions">
+          <strong>Padrão de nome das campanhas:</strong>
+          <ul><li><code>Nome - Formato - Data - Objetivo</code></li><li>Objetivos: <code>ALC</code> <code>ENG</code> <code>WHATS</code> <code>VIEWS</code></li><li>Modificador: <code>CLIQUE NO LINK</code></li></ul>
+        </div>
+        <details class="config-panel">
+        <summary>⚙️ Configurar regras do CampaignClassifier via JSON</summary>
+        <p>Edite as regras abaixo para mudar a detecção de formato, objetivo e prioridade sem alterar o código. Ao aplicar, as campanhas já importadas também são reclassificadas.</p>
+        <textarea id="classifierConfigInput" class="config-textarea" spellcheck="false"></textarea>
+        <div class="config-actions">
+          <button type="button" class="btn btn-excel" onclick="applyClassifierConfig()">Aplicar JSON</button>
+          <button type="button" class="btn btn-secondary" onclick="downloadClassifierConfig()">Baixar JSON</button>
+          <button type="button" class="btn btn-warning" onclick="resetClassifierConfig()">Restaurar padrão</button>
+        </div>
+        <div id="classifierConfigStatus" class="config-status"></div>
+      </details>
+    </div>
+    <div>
+      <div class="side-card">
+        <h3>Como funciona</h3>
+        <div class="flow-list">
+          <div class="flow-item"><div class="flow-num">1</div><div><strong>Envie a planilha</strong><span>Importe a planilha exportada do Meta Ads de qualquer cliente em poucos segundos.</span></div></div>
+          <div class="flow-item"><div class="flow-num">2</div><div><strong>Revise a classificação</strong><span>Confira objetivos e formatos detectados automaticamente.</span></div></div>
+          <div class="flow-item"><div class="flow-num">3</div><div><strong>Preencha a capa</strong><span>Complete Facebook e Instagram com os dados do período.</span></div></div>
+          <div class="flow-item"><div class="flow-num">4</div><div><strong>Exporte o relatório</strong><span>Baixe o Excel final formatado para revisão e entrega.</span></div></div>
+        </div>
+      </div>
+      <div class="side-card">
+        <h3>O que o sistema identifica sozinho</h3>
+        <div class="auto-list">
+          <div class="auto-pill"><span>Cliente</span><small>nome do arquivo</small></div>
+          <div class="auto-pill"><span>Período</span><small>mês e ano</small></div>
+          <div class="auto-pill"><span>Campanhas</span><small>linhas da planilha</small></div>
+          <div class="auto-pill"><span>Formatos</span><small>aliases e normalização</small></div>
+          <div class="auto-pill"><span>Objetivos</span><small>regras configuráveis</small></div>
+        </div>
+      </div>
+      <div class="side-card example-card">
+        <h3>Compatível com múltiplos clientes</h3>
+        <div class="example-file">Uso recorrente com diferentes planilhas exportadas do Meta Ads</div>
+        <div class="example-stats">
+          <div class="example-stat"><span>Cliente identificado</span><strong>Pelo nome do arquivo</strong></div>
+          <div class="example-stat"><span>Período detectado</span><strong>Mês e ano automáticos</strong></div>
+          <div class="example-stat"><span>Campanhas analisadas</span><strong>Leitura da planilha importada</strong></div>
+          <div class="example-stat"><span>Fluxo padronizado</span><strong>Upload → revisão → capa → exportação</strong></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <!-- REVIEW -->
+  <div id="reviewArea">
+    <div class="review-card">
+      <h2>Revisar Objetivos — <span id="clienteName" style="color:#ff9900"></span></h2>
+      <p>Confira os objetivos detectados e ajuste se necessário.</p>
+      <div class="review-stats" id="reviewStats"></div>
+      <div style="overflow-x:auto"><table class="review-table"><thead><tr><th>Campanha</th><th>Formato</th><th>Objetivo</th><th>Alterar</th></tr></thead><tbody id="reviewBody"></tbody></table></div>
+      <div class="review-actions"><button class="btn-generate" onclick="goToCapa()">Próximo: Preencher Capa →</button><button class="btn-back" onclick="resetView()">Voltar</button></div>
+    </div>
+  </div>
+  <!-- CAPA -->
+  <div id="capaArea">
+    <div class="capa-card">
+      <h2>Preencher Dados da Capa — <span id="capaClienteName" style="color:#ff9900"></span></h2>
+      <p>Preencha os dados de seguidores e métricas do Facebook e Instagram para a capa do relatório.</p>
+      <div class="capa-grid">
+        <div class="capa-section">
+          <h3><span class="icon-fb">📘</span> Facebook</h3>
+          <div class="capa-field"><label>Total de Seguidores</label><input type="text" id="fb_seguidores" placeholder="Ex: 5.230"></div>
+          <div class="capa-field"><label>Seguidores no Mês Anterior</label><input type="text" id="fb_seg_anterior" placeholder="Ex: 5.100"></div>
+          <div class="capa-field"><label>% Homens</label><input type="text" id="fb_homens" placeholder="Ex: 27,2%"></div>
+          <div class="capa-field"><label>% Mulheres</label><input type="text" id="fb_mulheres" placeholder="Ex: 72,8%"></div>
+          <div class="capa-field"><label>Faixa Etária Principal</label><input type="text" id="fb_faixa" placeholder="Ex: 25 a 45"></div>
+          <div class="capa-field"><label>Contas Alcançadas</label><input type="text" id="fb_alcancadas" placeholder="Ex: 12.500"></div>
+          <div class="capa-field"><label>Visitas à Página</label><input type="text" id="fb_visitas" placeholder="Ex: 3.200"></div>
+        </div>
+        <div class="capa-section">
+          <h3><span class="icon-ig">📸</span> Instagram</h3>
+          <div class="capa-field"><label>Total de Seguidores</label><input type="text" id="ig_seguidores" placeholder="Ex: 8.450"></div>
+          <div class="capa-field"><label>Seguidores no Mês Anterior</label><input type="text" id="ig_seg_anterior" placeholder="Ex: 8.100"></div>
+          <div class="capa-field"><label>% Homens</label><input type="text" id="ig_homens" placeholder="Ex: 33,7%"></div>
+          <div class="capa-field"><label>% Mulheres</label><input type="text" id="ig_mulheres" placeholder="Ex: 66,3%"></div>
+          <div class="capa-field"><label>Faixa Etária Principal</label><input type="text" id="ig_faixa" placeholder="Ex: 25 a 45"></div>
+          <div class="capa-field"><label>Contas Alcançadas</label><input type="text" id="ig_alcancadas" placeholder="Ex: 25.000"></div>
+          <div class="capa-field"><label>Visitas ao Perfil</label><input type="text" id="ig_visitas" placeholder="Ex: 6.800"></div>
+        </div>
+      </div>
+      <div class="capa-actions">
+        <button class="btn-generate" onclick="toggleCapaPreview()" id="btnPreviewCapa">👁 Visualizar Capa</button>
+        <button class="btn-generate" onclick="confirmAndRender()" style="background:#15803d;border:1px solid #16a34a">Gerar Relatório</button>
+        <button class="btn-back" onclick="backToReview()">← Voltar à Revisão</button>
+      </div>
+      <div id="capaPreview">
+        <div class="capa-preview-box" id="capaPreviewBox">
+          <div class="capa-preview-title" id="prev_titulo">CLIENTE - MÊS - ANO</div>
+          <div class="capa-preview-cols">
+            <div class="capa-preview-col">
+              <div class="capa-preview-col-title">📘 Facebook</div>
+              <div class="capa-preview-seg" id="prev_fb_seg">Total de — seguidores</div>
+              <div class="capa-preview-seg-ant" id="prev_fb_seg_ant">— seguidores no mês anterior</div>
+              <div class="capa-preview-genero">
+                <span id="prev_fb_h">— Homens</span>
+                <span id="prev_fb_m">— Mulheres</span>
+              </div>
+              <div class="capa-preview-metrics">
+                <div class="capa-preview-metric"><span class="val" id="prev_fb_faixa">—</span><span class="lbl">Faixa Etária</span></div>
+                <div class="capa-preview-metric"><span class="val" id="prev_fb_alc">—</span><span class="lbl">Contas Alcançadas</span></div>
+                <div class="capa-preview-metric"><span class="val" id="prev_fb_vis">—</span><span class="lbl">Visitas à Página</span></div>
+              </div>
+            </div>
+            <div class="capa-preview-col">
+              <div class="capa-preview-col-title">📸 Instagram</div>
+              <div class="capa-preview-seg" id="prev_ig_seg">Total de — seguidores</div>
+              <div class="capa-preview-seg-ant" id="prev_ig_seg_ant">— seguidores no mês anterior</div>
+              <div class="capa-preview-genero">
+                <span id="prev_ig_h">— Homens</span>
+                <span id="prev_ig_m">— Mulheres</span>
+              </div>
+              <div class="capa-preview-metrics">
+                <div class="capa-preview-metric"><span class="val" id="prev_ig_faixa">—</span><span class="lbl">Faixa Etária</span></div>
+                <div class="capa-preview-metric"><span class="val" id="prev_ig_alc">—</span><span class="lbl">Contas Alcançadas</span></div>
+                <div class="capa-preview-metric"><span class="val" id="prev_ig_vis">—</span><span class="lbl">Visitas ao Perfil</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- REPORT -->
+  <div id="reportArea" style="display:none">
+    <div class="report-header"><div><h2>Relatório — <span id="clienteNameReport" style="color:#ff9900"></span></h2><p>Apenas as métricas correspondentes ao objetivo são preenchidas.</p></div><button class="btn-back" onclick="resetView()">Importar outro arquivo</button></div>
+    <div class="table-wrap"><div class="table-title">AÇÕES MENSAIS</div><div class="table-scroll"><table class="report"><thead><tr>
+      <th>Nome da Ação</th><th>Formato</th><th>Validade</th><th>Investimento</th><th>Valor Gasto</th><th>Alcance</th><th>Engajamento</th><th>Cliques no Link</th><th>Visualização (ThruPlay)</th><th>Custo por 1.000 Pessoas</th><th>Custo por Cliques no Link</th><th>Custo por ThruPlay</th><th>Custo por Interação</th><th>Custo por Conversa</th><th>Filtro</th><th>Cidade</th><th>Conversas Iniciadas</th>
+    </tr></thead><tbody id="tableBody"></tbody></table></div></div>
+    <div class="legend">
+      <div class="legend-title">RAIO-X DOS RESULTADOS - ENTENDA O QUE CADA INDICADOR MOSTRA</div>
+      <p><strong>Alcance:</strong> É o número de contas que a postagem alcançou. Ou seja, a quantidade de contas que receberam o post.</p>
+      <p><strong>Engajamento:</strong> É o número de vezes que houve interação com a postagem de pessoas com maior probabilidade de interesse no produto ofertado. A plataforma analisa os perfis de pessoas que estejam procurando os produtos ofertados, e faz a entrega para estes perfis (sem filtro). Ou seja, a soma da quantidade de vezes que o post foi aberto, curtido, compartilhado, comentado por um público mais engajado.</p>
+      <p><strong>Conversas iniciadas:</strong> Quantidade de conversas iniciadas no WhatsApp a partir do anúncio.</p>
+      <p><strong>Visualização (ThruPlay):</strong> Número de vezes que o vídeo foi assistido por pelo menos 15 segundos ou até o fim, quando menor que esse tempo.</p>
+      <p><strong>Cliques no link:</strong> Quantidade de cliques em links do anúncio para destinos externos, como site ou WhatsApp.</p>
+      <p class="legend-note">*Algumas colunas podem não ser preenchidas, pois variam de acordo com o tipo de impulsionamento e com as métricas disponíveis em cada campanha. Além disso, em alguns casos, a plataforma pode não utilizar toda a verba prevista, seja por limitação de público, concorrência no leilão de anúncios, baixo engajamento ou instabilidades na entrega. Por isso, o valor efetivamente considerado como consumido é o da coluna "Valor gasto".</p>
+    </div>
+  </div>
+</main>
+<script>
+
+// ======================================================
+// Estado global da aplicação
+// ======================================================
+var campaignsData = [];
+var originalFileName = '';
+var capaData = { fb: {}, ig: {} };
+
+// CORRIGIDO: removida declaração duplicada de GOOGLE_SHEETS_EXPORT_TEMPLATE
+var GOOGLE_SHEETS_EXPORT_TEMPLATE = {
+  name: 'Modelo a ser preenchido 20',
+  spreadsheetId: '1pc9YlbSVQg5mGD5eh5Nbvr8SNH4t2Thlfr8mPUaMluA',
+  url: 'https://docs.google.com/spreadsheets/d/1pc9YlbSVQg5mGD5eh5Nbvr8SNH4t2Thlfr8mPUaMluA/edit',
+  sheetNames: ['Capa', 'Relatório']
+};
+
+var APP_STORAGE_KEY = 'relatorios_ads_state_v1';
+var CAPA_INPUT_IDS = [
+  'fb_seguidores', 'fb_seg_anterior', 'fb_homens', 'fb_mulheres',
+  'fb_faixa', 'fb_alcancadas', 'fb_visitas',
+  'ig_seguidores', 'ig_seg_anterior', 'ig_homens', 'ig_mulheres',
+  'ig_faixa', 'ig_alcancadas', 'ig_visitas'
+];
+var capaInputsBound = false;
+
+var AppState = {
+  get campaignsData() { return campaignsData; },
+  set campaignsData(value) { campaignsData = Array.isArray(value) ? value : []; },
+  get originalFileName() { return originalFileName; },
+  set originalFileName(value) { originalFileName = value || ''; },
+  get capaData() { return capaData; },
+  set capaData(value) { capaData = value || { fb: {}, ig: {} }; }
+};
+
+function $(id) {
+  return document.getElementById(id);
+}
+
+// ======================================================
+// Persistência
+// ======================================================
+function getCurrentView() {
+  if ($('reportArea').style.display === 'block') return 'report';
+  if ($('capaArea').style.display === 'block') return 'capa';
+  if ($('reviewArea').style.display === 'block') return 'review';
+  return 'upload';
+}
+
+function collectCapaDataSafe() {
+  return $('fb_seguidores') ? collectCapaData() : (AppState.capaData || { fb: {}, ig: {} });
+}
+
+var StorageService = {
+  buildState: function () {
+    return {
+      campaignsData: AppState.campaignsData,
+      originalFileName: AppState.originalFileName,
+      capaData: collectCapaDataSafe(),
+      currentView: getCurrentView(),
+      previewVisible: $('capaPreview').style.display === 'block'
+    };
+  },
+  save: function () {
+    try {
+      localStorage.setItem(APP_STORAGE_KEY, JSON.stringify(this.buildState()));
+    } catch (err) {
+      console.warn('Não foi possível salvar o estado no navegador.', err);
+    }
+  },
+  load: function () {
+    try {
+      var raw = localStorage.getItem(APP_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (err) {
+      console.warn('Não foi possível recuperar o estado salvo.', err);
+      return null;
+    }
+  },
+  clear: function () {
+    try {
+      localStorage.removeItem(APP_STORAGE_KEY);
+    } catch (err) {
+      console.warn('Não foi possível limpar o estado salvo.', err);
+    }
+  }
+};
+
+function saveAppState() { StorageService.save(); }
+function loadAppState() { return StorageService.load(); }
+function clearAppState() { StorageService.clear(); }
+
+// ======================================================
+// Formatação e parsing utilitário
+// ======================================================
+var fmtBRL = function (v) {
+  return (typeof v === 'number' && v > 0)
+    ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v)
+    : '-';
+};
+
+var fmtNum = function (v) {
+  return (typeof v === 'number' && v > 0)
+    ? new Intl.NumberFormat('pt-BR').format(v)
+    : '-';
+};
+
+function titleCase(str) {
+  if (!str) return str;
+  return String(str).toLowerCase().replace(/(?:^|\s|-)\S/g, function (c) { return c.toUpperCase(); });
+}
+
+function parseCurrency(v) {
+  if (typeof v === 'number') return v;
+  if (!v) return 0;
+  var s = String(v).trim();
+  if (s === '' || s === '-' || s === '–' || s === '—') return 0;
+  // Remove símbolo de moeda e espaços
+  s = s.replace(/[R$\s]/g, '');
+  // Formato BR: ponto = milhar, vírgula = decimal (ex: 1.234,56 ou 0,70)
+  if (s.indexOf(',') !== -1) {
+    s = s.replace(/\./g, '').replace(',', '.');
+  }
+  // Formato US: vírgula = milhar, ponto = decimal (ex: 1,234.56)
+  // Já está correto, não precisa alterar
+  return parseFloat(s) || 0;
+}
+
+function parseNum(v) {
+  if (typeof v === 'number') return Math.round(v);
+  if (!v) return 0;
+  return parseInt(String(v).replace(/[^0-9]/g, ''), 10) || 0;
+}
+
+function parseMetaDate(v) {
+  if (v instanceof Date && !isNaN(v.getTime())) return v;
+  if (typeof v === 'number') {
+    var parsed = XLSX.SSF.parse_date_code(v);
+    if (parsed) return new Date(parsed.y, parsed.m - 1, parsed.d);
+  }
+  if (!v) return null;
+  var s = String(v).trim();
+  var iso8 = s.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/);
+  if (iso8) {
+    var di = new Date(+iso8[1], +iso8[2] - 1, +iso8[3]);
+    return isNaN(di.getTime()) ? null : di;
+  }
+  var m = s.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})$/);
+  if (m) {
+    var year = +m[3];
+    if (year < 100) year += 2000;
+    var d = new Date(year, +m[2] - 1, +m[1]);
+    return isNaN(d.getTime()) ? null : d;
+  }
+  var iso = new Date(s);
+  return isNaN(iso.getTime()) ? null : iso;
+}
+
+function fmtDateBR(d) {
+  if (!d) return '';
+  return String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear();
+}
+
+function extractDateFromName(name) {
+  var match = (name || '').match(/(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})/);
+  if (!match) return null;
+  var year = +match[3];
+  if (year < 100) year += 2000;
+  var d = new Date(year, +match[2] - 1, +match[1]);
+  return isNaN(d.getTime()) ? null : d;
+}
+
+function getIdx(headers, keywords) {
+  var exact = headers.findIndex(function (header) {
+    return keywords.some(function (keyword) { return header === keyword; });
+  });
+  if (exact >= 0) return exact;
+  return headers.findIndex(function (header) {
+    return keywords.some(function (keyword) { return header.includes(keyword); });
+  });
+}
+
+function levenshtein(a, b) {
+  var m = a.length, n = b.length, d = [];
+  for (var i = 0; i <= m; i++) { d[i] = []; for (var j = 0; j <= n; j++) d[i][j] = 0; }
+  for (var i2 = 0; i2 <= m; i2++) d[i2][0] = i2;
+  for (var j2 = 0; j2 <= n; j2++) d[0][j2] = j2;
+  for (var row = 1; row <= m; row++) {
+    for (var col = 1; col <= n; col++) {
+      d[row][col] = Math.min(
+        d[row-1][col]+1, d[row][col-1]+1,
+        d[row-1][col-1]+(a[row-1]===b[col-1]?0:1)
+      );
+    }
+  }
+  return d[m][n];
+}
+
+function fuzzyMatch(word, targets, maxDist) {
+  var normalized = word.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  for (var i = 0; i < targets.length; i++) {
+    if (normalized === targets[i]) return true;
+    if (normalized.length >= 3 && targets[i].length >= 3 && levenshtein(normalized, targets[i]) <= maxDist) return true;
+  }
+  return false;
+}
+
+// ======================================================
+// Regras de classificação
+// ======================================================
+var OBJ_LABELS = {
+  Alc:         'Alcance',
+  Eng:         'Engajamento',
+  EngLink:     'Engajamento de Link',
+  EngWhats:    'Engajamento Conversa Whats',
+  TrafLink:    'Tráfego de Link',
+  TrafWhats:   'Tráfego Conversas Whats',
+  ReelsAlc:    'Reels Alcance',
+  ReelsEng:    'Reels Engajamento',
+  ReelsEngLink:'Reels Engajamento de Link',
+  ReelsEngWhats:'Reels Engajamento Conversa Whats',
+  ReelsTrafLink:'Reels Tráfego de Link',
+  ReelsTrafWhats:'Reels Tráfego Conversas Whats',
+  indefinido:  '⚠ Não detectado'
+};
+var OBJ_BADGE = {
+  Alc:          'badge-alc',
+  Eng:          'badge-eng',
+  EngLink:      'badge-eng-link',
+  EngWhats:     'badge-conv',
+  TrafLink:     'badge-eng-link',
+  TrafWhats:    'badge-conv',
+  ReelsAlc:     'badge-views',
+  ReelsEng:     'badge-views',
+  ReelsEngLink: 'badge-views',
+  ReelsEngWhats:'badge-views',
+  ReelsTrafLink:'badge-views',
+  ReelsTrafWhats:'badge-views',
+  indefinido:   'badge-unknown'
+};
+var OBJ_OPTIONS = ['Alc','Eng','EngLink','EngWhats','TrafLink','TrafWhats','ReelsAlc','ReelsEng','ReelsEngLink','ReelsEngWhats','ReelsTrafLink','ReelsTrafWhats'];
+var CLASSIFIER_CONFIG_STORAGE_KEY = 'relatorios_ads_classifier_config_v4';
+var DEFAULT_CLASSIFIER_CONFIG = {
+  normalizationAliases: {
+    panfleto:['panfletos'],
+    tabloide:['tabloides','tablóide','tablóides','tabloid','tabloids'],
+    virtual:['virtuais'],
+    carrossel:['carrosel','carrosseis','carrosséis'],
+    reels:['reel'],
+    video:['vídeo','videos','vídeos','vid'],
+    whatsapp:['whats','wpp','zap','zapp','wats'],
+    engajamento:['eng','engaj','engajamentos'],
+    alcance:['alc','al','alcances'],
+    conversa:['conversas'],
+    clique:['cliques','clic'],
+    link:['links']
+  },
+  formatKeywords:[
+    {keyword:'reels',label:'Reels'},
+    {keyword:'panfleto',label:'Panfleto',aliases:['virtual','tabloide']},
+    {keyword:'carrossel',label:'Carrossel'},
+    {keyword:'post',label:'Post'},
+    {keyword:'video',label:'Vídeo',aliases:['vídeo']}
+  ],
+  objectivePriority:{Alc:1,Eng:2,EngLink:3,EngWhats:4,TrafLink:5,TrafWhats:6,ReelsAlc:7,ReelsEng:8,ReelsEngLink:9,ReelsEngWhats:10,ReelsTrafLink:11,ReelsTrafWhats:12},
+  objectiveRules:[
+    // ── REELS (sempre vem primeiro pois é formato específico) ──
+    // Reels + TRAF + WHATS
+    {name:'Reels Tráfego Whats',objective:'ReelsTrafWhats',when:{allWords:[['reels','reel'],['traf','trafego'],['whats','whatsapp','wpp','zap','wats']]}},
+    // Reels + TRAF + LINK
+    {name:'Reels Tráfego Link',objective:'ReelsTrafLink',when:{allWords:[['reels','reel'],['traf','trafego'],['link','clique']]}},
+    // Reels + ENG + WHATS
+    {name:'Reels Eng Whats',objective:'ReelsEngWhats',when:{allWords:[['reels','reel'],['eng','engajamento','engaj'],['whats','whatsapp','wpp','zap','wats']]}},
+    // Reels + ENG + LINK
+    {name:'Reels Eng Link',objective:'ReelsEngLink',when:{allWords:[['reels','reel'],['eng','engajamento','engaj'],['link','clique']]}},
+    // Reels + ENG
+    {name:'Reels Eng',objective:'ReelsEng',when:{allWords:[['reels','reel'],['eng','engajamento','engaj']]}},
+    // Reels + ALC ou só REELS
+    {name:'Reels Alcance',objective:'ReelsAlc',when:{anyWords:[['reels','reel']]}},
+    // ── MÍDIA COMUM ──
+    // TRAF + WHATS
+    {name:'Tráfego Whats',objective:'TrafWhats',when:{allWords:[['traf','trafego'],['whats','whatsapp','wpp','zap','wats']]}},
+    // TRAF + LINK
+    {name:'Tráfego Link',objective:'TrafLink',when:{allWords:[['traf','trafego'],['link','clique']]}},
+    // ENG + WHATS
+    {name:'Eng Whats',objective:'EngWhats',when:{allWords:[['eng','engajamento','engaj'],['whats','whatsapp','wpp','zap','wats']]}},
+    // ENG + LINK
+    {name:'Eng Link',objective:'EngLink',when:{allWords:[['eng','engajamento','engaj'],['link','clique']]}},
+    // ENG
+    {name:'Engajamento',objective:'Eng',when:{anyWords:[['eng','engajamento','engaj','e']]}},
+    // ALC
+    {name:'Alcance',objective:'Alc',when:{anyWords:[['alc','alcance']]}}
+  ]
+};
+
+function deepClone(value) { return JSON.parse(JSON.stringify(value)); }
+
+var CampaignClassifier = {
+  config: null,
+  normalizeText: function(value) {
+    return String(value||'').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Z0-9]+/g,' ').replace(/\s+/g,' ').trim();
+  },
+  normalizeWord: function(value) { return this.normalizeText(value).toLowerCase(); },
+  normalizeCompact: function(value) { return this.normalizeWord(value).replace(/\s+/g,''); },
+  tokenize: function(value) {
+    var classifier = this;
+    var rawTokens = this.normalizeText(value).split(/[\s\-–_]+/).filter(Boolean);
+    var result = [];
+    rawTokens.forEach(function(token) {
+      var canonical = classifier.canonicalizeToken(token);
+      if (canonical) result.push(canonical);
+      if (canonical && canonical !== token.toLowerCase()) result.push(token.toLowerCase());
+      var singular = classifier.toSingular(canonical || token.toLowerCase());
+      if (singular) result.push(singular);
+    });
+    return Array.from(new Set(result.filter(Boolean)));
+  },
+  ensureArray: function(value) { return Array.isArray(value) ? value : []; },
+  getDefaultConfig: function() { return deepClone(DEFAULT_CLASSIFIER_CONFIG); },
+  normalizeConfig: function(config) {
+    var base = config && typeof config === 'object' ? deepClone(config) : this.getDefaultConfig();
+    var aliasesMap = base.normalizationAliases && typeof base.normalizationAliases === 'object'
+      ? base.normalizationAliases : deepClone(DEFAULT_CLASSIFIER_CONFIG.normalizationAliases);
+    var normalizedAliases = {};
+    Object.keys(aliasesMap||{}).forEach(function(key) {
+      var canonical = CampaignClassifier.normalizeWord(key);
+      if (!canonical) return;
+      normalizedAliases[canonical] = CampaignClassifier.ensureArray(aliasesMap[key]).map(function(alias) {
+        return String(alias||'').trim();
+      }).filter(Boolean);
+    });
+    base.normalizationAliases = normalizedAliases;
+    base.formatKeywords = this.ensureArray(base.formatKeywords).map(function(item) {
+      if (typeof item === 'string') return {keyword:item,label:item.charAt(0).toUpperCase()+item.slice(1),aliases:[]};
+      return {
+        keyword:String(item&&item.keyword||'').trim(),
+        label:String(item&&item.label||item&&item.keyword||'').trim(),
+        aliases:CampaignClassifier.ensureArray(item&&item.aliases).map(function(alias){return String(alias||'').trim();}).filter(Boolean)
+      };
+    }).filter(function(item){return item.keyword;});
+    base.objectivePriority = base.objectivePriority && typeof base.objectivePriority === 'object'
+      ? base.objectivePriority : deepClone(DEFAULT_CLASSIFIER_CONFIG.objectivePriority);
+    base.objectiveRules = this.ensureArray(base.objectiveRules).map(function(rule) {
+      return {
+        name:String(rule&&rule.name||'').trim(),
+        objective:String(rule&&rule.objective||'').trim(),
+        aliases:CampaignClassifier.ensureArray(rule&&rule.aliases).map(function(alias){return String(alias||'').trim();}).filter(Boolean),
+        tolerance:typeof rule.tolerance==='number'?rule.tolerance:null,
+        when:rule&&typeof rule.when==='object'?rule.when:{}
+      };
+    }).filter(function(rule){return rule.objective;});
+    if (!base.formatKeywords.length) base.formatKeywords = deepClone(DEFAULT_CLASSIFIER_CONFIG.formatKeywords);
+    if (!base.objectiveRules.length) base.objectiveRules = deepClone(DEFAULT_CLASSIFIER_CONFIG.objectiveRules);
+    return base;
+  },
+  loadConfig: function() {
+    try {
+      var raw = localStorage.getItem(CLASSIFIER_CONFIG_STORAGE_KEY);
+      if (!raw) return this.getDefaultConfig();
+      return this.normalizeConfig(JSON.parse(raw));
+    } catch(err) { return this.getDefaultConfig(); }
+  },
+  saveConfig: function(config) {
+    var normalized = this.normalizeConfig(config);
+    localStorage.setItem(CLASSIFIER_CONFIG_STORAGE_KEY, JSON.stringify(normalized));
+    this.config = normalized;
+    return normalized;
+  },
+  resetConfig: function() {
+    try { localStorage.removeItem(CLASSIFIER_CONFIG_STORAGE_KEY); } catch(err) {}
+    this.config = this.getDefaultConfig();
+    return this.config;
+  },
+  exportConfig: function() { return JSON.stringify(this.ensureConfig(), null, 2); },
+  ensureConfig: function() {
+    if (!this.config) this.config = this.loadConfig();
+    return this.config;
+  },
+  toSingular: function(value) {
+    var word = this.normalizeWord(value);
+    if (!word) return '';
+    if (word.endsWith('oes')) return word.slice(0,-3)+'ao';
+    if (word.endsWith('aes')) return word.slice(0,-3)+'ao';
+    if (word.endsWith('is') && word.length > 4) return word.slice(0,-2)+'l';
+    if (word.endsWith('s') && word.length > 3) return word.slice(0,-1);
+    return word;
+  },
+  getAliasesForCanonical: function(canonical) {
+    var cfg = this.ensureConfig();
+    var key = this.normalizeWord(canonical);
+    return this.ensureArray(cfg.normalizationAliases && cfg.normalizationAliases[key]);
+  },
+  canonicalizeToken: function(value) {
+    var token = this.toSingular(value);
+    if (!token) return '';
+    var cfg = this.ensureConfig();
+    var aliasesMap = cfg.normalizationAliases || {};
+    var keys = Object.keys(aliasesMap);
+    for (var i = 0; i < keys.length; i++) {
+      var canonical = this.normalizeWord(keys[i]);
+      if (token === canonical) return canonical;
+      var aliases = this.ensureArray(aliasesMap[keys[i]]);
+      for (var j = 0; j < aliases.length; j++) {
+        if (token === this.toSingular(aliases[j])) return canonical;
+      }
+    }
+    return token;
+  },
+  expandTermVariants: function(term) {
+    var classifier = this;
+    var seen = {}, variants = [];
+    function addVariant(value) {
+      var normalized = classifier.normalizeWord(value);
+      if (!normalized) return;
+      [normalized, classifier.toSingular(normalized)].forEach(function(form) {
+        if (!form || seen[form]) return;
+        seen[form] = true; variants.push(form);
+      });
+    }
+    addVariant(term);
+    var canonical = this.canonicalizeToken(term);
+    addVariant(canonical);
+    this.getAliasesForCanonical(canonical).forEach(addVariant);
+    this.getAliasesForCanonical(term).forEach(addVariant);
+    return variants;
+  },
+  getCanonicalObjective: function(objective) {
+    var cfg = this.ensureConfig();
+    var normalizedObjective = this.normalizeText(objective);
+    if (!normalizedObjective) return objective || '-';
+    for (var i = 0; i < cfg.objectiveRules.length; i++) {
+      var rule = cfg.objectiveRules[i];
+      if (this.normalizeText(rule.objective) === normalizedObjective) return rule.objective;
+      var aliases = this.ensureArray(rule.aliases);
+      for (var j = 0; j < aliases.length; j++) {
+        if (this.normalizeText(aliases[j]) === normalizedObjective) return rule.objective;
+      }
+    }
+    var priorities = Object.keys(cfg.objectivePriority || {});
+    for (var p = 0; p < priorities.length; p++) {
+      if (this.normalizeText(priorities[p]) === normalizedObjective) return priorities[p];
+    }
+    return objective || '-';
+  },
+  hasFuzzyWord: function(words, dictionary, tolerance) {
+    var expandedDictionary = [];
+    this.ensureArray(dictionary).forEach(function(item) {
+      expandedDictionary = expandedDictionary.concat(CampaignClassifier.expandTermVariants(item));
+    });
+    expandedDictionary = Array.from(new Set(expandedDictionary));
+    return words.some(function(word) { return fuzzyMatch(word, expandedDictionary, tolerance); });
+  },
+  normalizeWordGroups: function(groups) {
+    return this.ensureArray(groups).map(function(group) {
+      return Array.isArray(group) ? group : [group];
+    }).map(function(group) {
+      return group.map(function(item){return String(item||'').trim();}).filter(Boolean);
+    }).filter(function(group){return group.length;});
+  },
+  matchesWordGroup: function(words, group, tolerance) { return this.hasFuzzyWord(words, group, tolerance); },
+  matchesAllWordGroups: function(words, groups, tolerance) {
+    var normalizedGroups = this.normalizeWordGroups(groups);
+    for (var i = 0; i < normalizedGroups.length; i++) {
+      if (!this.matchesWordGroup(words, normalizedGroups[i], tolerance)) return false;
+    }
+    return true;
+  },
+  matchesAnyWordGroups: function(words, groups, tolerance) {
+    var normalizedGroups = this.normalizeWordGroups(groups);
+    if (!normalizedGroups.length) return false;
+    for (var i = 0; i < normalizedGroups.length; i++) {
+      if (this.matchesWordGroup(words, normalizedGroups[i], tolerance)) return true;
+    }
+    return false;
+  },
+  testRegex: function(pattern, text) {
+    if (!pattern) return true;
+    try { return new RegExp(pattern,'i').test(text); } catch(err) { return false; }
+  },
+  sourceContainsTerm: function(source, term) {
+    var normalizedSource = this.normalizeWord(source);
+    var compactSource = this.normalizeCompact(source);
+    var variants = this.expandTermVariants(term);
+    for (var i = 0; i < variants.length; i++) {
+      var variant = variants[i];
+      if (!variant) continue;
+      if (normalizedSource.indexOf(variant) !== -1) return true;
+      if (compactSource.indexOf(variant.replace(/\s+/g,'')) !== -1) return true;
+    }
+    return false;
+  },
+  matchRule: function(rule, campName, format) {
+    var when = rule && rule.when || {};
+    var tolerance = typeof rule.tolerance === 'number' ? rule.tolerance : (typeof when.tolerance === 'number' ? when.tolerance : 1);
+    var normalizedText = this.normalizeText(campName);
+    var normalizedFormat = this.normalizeText(format);
+    var words = this.tokenize(campName);
+    var formatIn = this.ensureArray(when.formatIn).map(this.normalizeText.bind(this));
+    if (formatIn.length && formatIn.indexOf(normalizedFormat) === -1) return false;
+    if (when.textRegex && !this.testRegex(when.textRegex, normalizedText)) return false;
+    if (when.textIncludes) {
+      var includesGroups = this.normalizeWordGroups(when.textIncludes);
+      for (var ig = 0; ig < includesGroups.length; ig++) {
+        var groupMatched = includesGroups[ig].some(function(piece) {
+          return CampaignClassifier.sourceContainsTerm(normalizedText, piece);
+        });
+        if (!groupMatched) return false;
+      }
+    }
+    if (when.allWords && !this.matchesAllWordGroups(words, when.allWords, tolerance)) return false;
+    if (when.anyWords && !this.matchesAnyWordGroups(words, when.anyWords, tolerance)) return false;
+    if (when.noneWords && this.matchesAnyWordGroups(words, when.noneWords, tolerance)) return false;
+    return true;
+  },
+  detectObjective: function(campName, format) {
+    var cfg = this.ensureConfig();
+    for (var i = 0; i < cfg.objectiveRules.length; i++) {
+      if (this.matchRule(cfg.objectiveRules[i], campName, format)) return cfg.objectiveRules[i].objective;
+    }
+    return 'indefinido';
+  },
+  detectFormat: function(campName, adName) {
+    var cfg = this.ensureConfig();
+    var sources = [campName, adName].filter(Boolean);
+    for (var si = 0; si < sources.length; si++) {
+      var source = sources[si];
+      for (var ki = 0; ki < cfg.formatKeywords.length; ki++) {
+        var keywordRule = cfg.formatKeywords[ki];
+        var terms = [keywordRule.keyword].concat(this.ensureArray(keywordRule.aliases));
+        for (var ti = 0; ti < terms.length; ti++) {
+          if (this.sourceContainsTerm(source, terms[ti])) return keywordRule.label || keywordRule.keyword;
+        }
+      }
+    }
+    return '-';
+  },
+  getObjectivePriority: function(objective) {
+    var cfg = this.ensureConfig();
+    var canonicalObjective = this.getCanonicalObjective(objective);
+    return cfg.objectivePriority[canonicalObjective] || 999;
+  }
+};
+
+function detectObjective(campName, format) { return CampaignClassifier.detectObjective(campName, format); }
+function detectFormat(campName, adName) { return CampaignClassifier.detectFormat(campName, adName); }
+function objPriority(objective) { return CampaignClassifier.getObjectivePriority(objective); }
+
+function sortCampaignRows(data) {
+  data.sort(function(a, b) {
+    var da = extractDateFromName(a.name), db = extractDateFromName(b.name);
+    var ta = da ? da.getTime() : (a.sortDate ? a.sortDate.getTime() : 0);
+    var tb = db ? db.getTime() : (b.sortDate ? b.sortDate.getTime() : 0);
+    if (ta !== tb) return ta - tb;
+    return objPriority(a.objective) - objPriority(b.objective);
+  });
+}
+
+// ======================================================
+// Importação e parsing do Excel
+// ======================================================
+function parseTextDate(txt) {
+  if (!txt) return null;
+  var s = String(txt).trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  var MESES_MAP = {'jan':1,'janeiro':1,'fev':2,'fevereiro':2,'mar':3,'marco':3,'abr':4,'abril':4,'mai':5,'maio':5,'jun':6,'junho':6,'jul':7,'julho':7,'ago':8,'agosto':8,'set':9,'setembro':9,'out':10,'outubro':10,'nov':11,'novembro':11,'dez':12,'dezembro':12};
+  var m = s.match(/^(\d{1,2})\s+de\s+(\w+)\s+de\s+(\d{4})$/);
+  if (m) { var mes = MESES_MAP[m[2]]; if (mes) return new Date(+m[3], mes-1, +m[1]); }
+  return null;
+}
+
+function parseSchedule(val) {
+  if (!val) return {start:null,end:null};
+  var s = String(val).trim();
+  var parts = s.split(/\s*[–\-]\s*/);
+  if (parts.length >= 2) {
+    var d1 = parseTextDate(parts[0]) || parseMetaDate(parts[0].trim());
+    var d2 = parseTextDate(parts[parts.length-1]) || parseMetaDate(parts[parts.length-1].trim());
+    if (d1 && d2) return {start:d1,end:d2};
+  }
+  var matches = s.match(/(\d{1,2}[\/\.\-]\d{1,2}[\/\.\-]\d{2,4})/g);
+  if (matches && matches.length >= 2) return {start:parseMetaDate(matches[0]),end:parseMetaDate(matches[1])};
+  if (matches && matches.length === 1) return {start:parseMetaDate(matches[0]),end:null};
+  var single = parseTextDate(s);
+  if (single) return {start:single,end:null};
+  return {start:null,end:null};
+}
+
+function fmtValidity(dStart, dEnd) {
+  if (!dStart) return '';
+  var pad = function(n){return String(n).padStart(2,'0');};
+  var d1=pad(dStart.getDate()),m1=pad(dStart.getMonth()+1),y1=dStart.getFullYear();
+  if (!dEnd) return d1+'/'+m1+'/'+y1;
+  var d2=pad(dEnd.getDate()),m2=pad(dEnd.getMonth()+1),y2=dEnd.getFullYear();
+  var diffDays = Math.round((dEnd.getTime()-dStart.getTime())/86400000);
+  var conector = (diffDays<=1)?' e ':' a ';
+  if (m1===m2 && y1===y2) { return diffDays<=1 ? d1+' e '+d2+'/'+m2+'/'+y2 : d1+' a '+d2+'/'+m2+'/'+y2; }
+  if (y1===y2) return d1+'/'+m1+conector+d2+'/'+m2+'/'+y2;
+  return d1+'/'+m1+'/'+y1+conector+d2+'/'+m2+'/'+y2;
+}
+
+var FORMAT_BASE_WORDS = ['carrossel','carrosel','panfleto','panfletos','tabloide','tabloides','post','reels','reel','video','vídeo','virtual','virtuais'];
+var FORMAT_BASE_REGEX = new RegExp('^('+FORMAT_BASE_WORDS.join('|')+')$','i');
+
+function segmentIsFormat(segment) {
+  var words = segment.trim().split(/\s+/);
+  for (var w = 0; w < words.length; w++) { if (FORMAT_BASE_REGEX.test(words[w])) return true; }
+  return false;
+}
+
+function extractFormatLabel(name) {
+  if (!name) return '';
+  var CANONICAL = {
+    'carrossel':'Carrossel','carrosel':'Carrossel',
+    'panfleto':'Panfleto','panfletos':'Panfleto',
+    'tabloide':'Tabloide','tabloides':'Tabloide',
+    'post':'Post',
+    'reels':'Reels','reel':'Reels',
+    'video':'Vídeo','vídeo':'Vídeo',
+    'virtual':'Virtual','virtuais':'Virtual'
+  };
+  var parts = name.split(/\s*[-–]\s*/);
+  for (var i = 0; i < parts.length; i++) {
+    var segment = parts[i].trim();
+    if (!segment) continue;
+    var words = segment.split(/\s+/), baseWord='', modifiers=[];
+    for (var w = 0; w < words.length; w++) {
+      if (FORMAT_BASE_REGEX.test(words[w])) baseWord = CANONICAL[words[w].toLowerCase()] || words[w];
+      else modifiers.push(words[w]);
+    }
+    if (baseWord) return modifiers.length ? baseWord+' '+modifiers.join(' ') : baseWord;
+  }
+  return '';
+}
+
+function formatActionName(name, objective) {
+  if (!name) return '';
+  var parts = name.split(/\s*[-–]\s*/);
+  var DATE_PATTERN = /^\d{1,2}\/\d{1,2}(\/\d{2,4})?$/;
+  var OBJ_ABBREV = {'alc':'Alcance','al':'Alcance','alcance':'Alcance','eng':'Engajamento','engaj':'Engajamento','engajamento':'Engajamento','whats':'WhatsApp','whatsapp':'WhatsApp','wpp':'WhatsApp','zap':'WhatsApp','wats':'WhatsApp','traf':'Tráfego','trafego':'Tráfego','link':'Link','views':'Visualização','thruplay':'ThruPlay','conv':'Conversas','conversas':'Conversas'};
+  var cleaned = [], foundObj = false;
+  for (var i = 0; i < parts.length; i++) {
+    var segment = parts[i].trim();
+    if (!segment) continue;
+    if (DATE_PATTERN.test(segment)) continue;
+    if (segmentIsFormat(segment)) continue;
+    var segLower = segment.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    if (OBJ_ABBREV[segLower]) { cleaned.push(OBJ_ABBREV[segLower]); foundObj=true; continue; }
+    cleaned.push(segment);
+  }
+  if (!foundObj && objective && objective !== 'indefinido') {
+    var OBJ_DISPLAY = {'Alc':'Alcance','Eng':'Engajamento','EngLink':'Engajamento + Link','EngWhats':'Eng + Whats','TrafLink':'Tráfego + Link','TrafWhats':'Tráfego + Whats','ReelsAlc':'Reels Alcance','ReelsEng':'Reels Engajamento','ReelsEngLink':'Reels Eng + Link','ReelsEngWhats':'Reels Eng + Whats','ReelsTrafLink':'Reels Tráfego + Link','ReelsTrafWhats':'Reels Tráfego + Whats'};
+    cleaned.push(OBJ_DISPLAY[objective] || objective);
+  }
+  return cleaned.join(' - ');
+}
+
+function parseExcel(wb) {
+  var ws = wb.Sheets[wb.SheetNames[0]];
+  // raw:false converte datas e strings automaticamente
+  var rows = XLSX.utils.sheet_to_json(ws, {header:1, raw:false, defval:''});
+  if (!rows.length) throw new Error('Arquivo vazio.');
+
+  // Encontra a linha de cabeçalho (pula linhas vazias no topo)
+  var headerRowIdx = 0;
+  for (var hi = 0; hi < Math.min(5, rows.length); hi++) {
+    var firstCell = String(rows[hi][0]||'').toLowerCase().trim();
+    if (firstCell.includes('campanha') || firstCell.includes('campaign')) {
+      headerRowIdx = hi;
+      break;
+    }
+  }
+
+  var headers = rows[headerRowIdx].map(function(h) {
+    return String(h||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  });
+
+  // Mapeamento tolerante de colunas — pega a primeira que encontrar
+  var iCN   = getIdx(headers, ['nome da campanha','campaign name']);
+  var iAN   = getIdx(headers, ['nome do anuncio','ad name']);
+  var iCA   = getIdx(headers, ['nome do conjunto de anuncios','ad set name','conjunto de anuncios','nome do conjunto']);
+  var iDI   = getIdx(headers, ['inicio dos relatorios','inicio','start','data de inicio']);
+  var iDT   = getIdx(headers, ['termino dos relatorios','termino','end','data de termino']);
+  var iB    = getIdx(headers, ['orcamento da campanha','campaign budget','orcamento','investimento']);
+  var iS    = getIdx(headers, ['valor usado (brl)','valor usado','amount spent','valor gasto']);
+  var iR    = getIdx(headers, ['alcance','reach']);
+  var iIm   = getIdx(headers, ['impressoes','impressions']);
+  // Colunas detalhadas (nem sempre presentes)
+  var iEP   = getIdx(headers, ['engajamentos com o post','post engagements','engajamento']);
+  var iLC   = getIdx(headers, ['cliques no link','link clicks']);
+  var iThru = getIdx(headers, ['thruplays','thruplay','visualizacao (thruplay)','visualizacoes']);
+  var iCPM  = getIdx(headers, ['cpm (custo por 1.000 impressoes)','cpm','custo por 1.000 impressoes','custo por 1.000 pessoas']);
+  var iCPC  = getIdx(headers, ['cpc (custo por clique no link)','cpc (custo por clique)','custo por clique no link','cpc']);
+  var iCThru= getIdx(headers, ['custo por thruplay','cost per thruplay']);
+  var iCInt = getIdx(headers, ['custo por engajamento com o post','cost per post engagement','custo por interacao']);
+  var iCConv= getIdx(headers, ['custo por conversa por mensagem iniciada','cost per messaging conversation started','custo por conversa']);
+  var iConv = getIdx(headers, ['conversas por mensagem iniciadas','messaging conversations started','conversas iniciadas']);
+  // Colunas genéricas da exportação simplificada
+  var iRes  = getIdx(headers, ['resultados','results','result']);
+  var iCPR  = getIdx(headers, ['custo por resultado','cost per result']);
+  var iTRes = getIdx(headers, ['tipo de resultado']);
+
+  // Função segura de leitura — nunca quebra
+  function g(row, idx) {
+    if (idx < 0 || idx >= row.length) return '';
+    var val = row[idx];
+    if (val === null || val === undefined) return '';
+    if (typeof val === 'string') {
+      var t = val.trim();
+      if (t === '–' || t === '—' || t === '-' || t === '') return '';
+      return t;
+    }
+    return val;
+  }
+
+  // Lê número de forma segura — retorna 0 se não for número
+  function safeNum(row, idx) {
+    var v = g(row, idx);
+    if (v === '' || v === null || v === undefined) return 0;
+    return parseCurrency(v);
+  }
+
+  var data = [];
+  for (var i = headerRowIdx + 1; i < rows.length; i++) {
+    var row = rows[i];
+    if (!row || !row.length) continue;
+    var nameRaw = g(row, iCN);
+    if (!nameRaw || String(nameRaw).trim() === '') continue;
+    // Pula linhas de totais ou sumário
+    var nameLow = String(nameRaw).toLowerCase();
+    if (nameLow.includes('total') && nameRaw.length < 20) continue;
+
+    var name = String(nameRaw).trim();
+    var adName = String(g(row, iAN) || g(row, iCA) || '').trim();
+
+    var formatBase = detectFormat(name, adName);
+    var format = extractFormatLabel(name) || extractFormatLabel(adName) || formatBase;
+    var objective = detectObjective(name, formatBase);
+
+    var dateFromName = extractDateFromName(name);
+    var dStart = parseMetaDate(g(row, iDI));
+    var dEnd   = parseMetaDate(g(row, iDT));
+    var validity = '';
+    if (dStart) validity = fmtValidity(dStart, dEnd);
+    else if (dateFromName) validity = fmtValidity(dateFromName, null);
+    var sortDate = dateFromName || dStart;
+
+    var spent  = safeNum(row, iS);
+    var budget = safeNum(row, iB);
+    var reach  = Math.round(safeNum(row, iR));
+    var impr   = Math.round(safeNum(row, iIm));
+
+    // Valores genéricos da exportação simplificada
+    var resultados = Math.round(safeNum(row, iRes));
+    var custoRes   = safeNum(row, iCPR);
+
+    // Tipo de resultado da Meta (ex: "Cliques no link", "ThruPlay", "Interações com a publicação", "Conversas")
+    var tipoRes = String(g(row, iTRes) || '').toLowerCase();
+    var isClique = tipoRes.includes('clique') || tipoRes.includes('link');
+    var isThruplay = tipoRes.includes('thruplay') || tipoRes.includes('visuali');
+    var isConversa = tipoRes.includes('conversa') || tipoRes.includes('mensagem');
+    var isEngajamento = tipoRes.includes('interac') || tipoRes.includes('engaj');
+
+    // Colunas detalhadas — usa direto se disponível, senão usa Resultados pelo tipo
+    var eng   = Math.round(safeNum(row, iEP)  || (isEngajamento ? resultados : 0));
+    var links = Math.round(safeNum(row, iLC)  || (isClique      ? resultados : 0));
+    var thru  = Math.round(safeNum(row, iThru)|| (isThruplay    ? resultados : 0));
+    var conv  = Math.round(safeNum(row, iConv)|| (isConversa    ? resultados : 0));
+
+    // Se nenhum tipo específico, tenta usar resultados como engajamento genérico
+    if (!eng && !links && !thru && !conv && resultados > 0) eng = resultados;
+
+    // CPM — calcula se não tiver
+    var cpm = safeNum(row, iCPM);
+    if (!cpm && impr > 0 && spent > 0) cpm = (spent / impr) * 1000;
+
+    // CPC — usa coluna específica, senão custo por resultado se for clique
+    var cpc = safeNum(row, iCPC);
+    if (!cpc && isClique) cpc = custoRes || (links > 0 && spent > 0 ? spent / links : 0);
+    if (!cpc && links > 0 && spent > 0) cpc = spent / links;
+
+    // Custo por ThruPlay
+    var cThru = safeNum(row, iCThru);
+    if (!cThru && isThruplay) cThru = custoRes || (thru > 0 && spent > 0 ? spent / thru : 0);
+    if (!cThru && thru > 0 && spent > 0) cThru = spent / thru;
+
+    // Custo por interação
+    var cInt = safeNum(row, iCInt);
+    if (!cInt && isEngajamento) cInt = custoRes || (eng > 0 && spent > 0 ? spent / eng : 0);
+    if (!cInt && custoRes > 0 && eng > 0) cInt = custoRes;
+    if (!cInt && eng > 0 && spent > 0) cInt = spent / eng;
+
+    // Custo por conversa
+    var cConv = safeNum(row, iCConv);
+    if (!cConv && isConversa) cConv = custoRes || (conv > 0 && spent > 0 ? spent / conv : 0);
+    if (!cConv && conv > 0 && spent > 0) cConv = spent / conv;
+
+    data.push({
+      name: name,
+      displayName: formatActionName(name, objective),
+      format: format,
+      objective: objective,
+      validity: validity,
+      sortDate: sortDate,
+      budget: budget,
+      spent: spent,
+      reach: reach,
+      eng: eng,
+      links: links,
+      views: thru,
+      conv: conv,
+      cpm: cpm,
+      cpc: cpc,
+      cThru: cThru,
+      cInt: cInt,
+      cConv: cConv
+    });
+  }
+
+  if (!data.length) throw new Error('Nenhuma campanha encontrada. Verifique se o arquivo é uma exportação válida do Meta Ads.');
+  sortCampaignRows(data);
+  return data;
+}
+
+function setCurrentStep(step) {
+  var steps = document.querySelectorAll('#progressSteps .progress-step');
+  for (var i = 0; i < steps.length; i++) {
+    var itemStep = parseInt(steps[i].getAttribute('data-step'), 10);
+    steps[i].classList.remove('active','done');
+    if (itemStep < step) steps[i].classList.add('done');
+    if (itemStep === step) steps[i].classList.add('active');
+  }
+}
+
+function showFileSummary() {
+  var info = parseFileName(AppState.originalFileName || '');
+  var total = AppState.campaignsData.length;
+  var classificados = AppState.campaignsData.filter(function(row){return row.objective && row.objective !== 'indefinido';}).length;
+  var pendentes = total - classificados;
+  $('fileSummary').style.display = 'block';
+  $('sum_cliente').textContent = info.cliente || '-';
+  $('sum_periodo').textContent = ((info.mes || 'Mês não identificado') + (info.ano ? ' '+info.ano : '')).trim();
+  $('sum_campanhas').textContent = String(total);
+  $('sum_classificadas').textContent = classificados+'/'+total;
+  var banner = $('classificationBanner');
+  var bannerText = $('classificationBannerText');
+  banner.style.display = 'block';
+  if (pendentes > 0) {
+    banner.className = 'classification-banner warn';
+    bannerText.textContent = classificados+' campanhas classificadas automaticamente e '+pendentes+' precisam de revisão.';
+  } else {
+    banner.className = 'classification-banner';
+    bannerText.textContent = 'Todas as '+total+' campanhas foram classificadas automaticamente.';
+  }
+}
+
+// CORRIGIDO: validação de extensão no dropzone
+function setupUploadDropzone() {
+  var dropzone = $('uploadDropzone');
+  var fileInput = $('fileInput');
+  if (!dropzone || !fileInput || dropzone.dataset.ready === 'true') return;
+  dropzone.dataset.ready = 'true';
+  ['dragenter','dragover'].forEach(function(evtName) {
+    dropzone.addEventListener(evtName, function(evt) {
+      evt.preventDefault(); evt.stopPropagation();
+      dropzone.classList.add('dropzone-active');
+    });
+  });
+  ['dragleave','dragend','drop'].forEach(function(evtName) {
+    dropzone.addEventListener(evtName, function(evt) {
+      evt.preventDefault(); evt.stopPropagation();
+      dropzone.classList.remove('dropzone-active');
+    });
+  });
+  dropzone.addEventListener('drop', function(evt) {
+    var files = evt.dataTransfer && evt.dataTransfer.files;
+    if (!files || !files.length) return;
+    var file = files[0];
+    // CORRIGIDO: valida extensão antes de processar
+    var ext = file.name.split('.').pop().toLowerCase();
+    if (ext !== 'xlsx' && ext !== 'xls') {
+      showError('Formato inválido. Envie um arquivo .xlsx ou .xls exportado do Meta Ads.');
+      return;
+    }
+    processFile(file);
+  });
+}
+
+// CORRIGIDO: reader.onerror adicionado
+function processFile(file) {
+  if (!file) return;
+  AppState.originalFileName = file.name;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      var wb = XLSX.read(ev.target.result,{type:'array',cellDates:true,dateNF:'dd/mm/yyyy'});
+      var data = parseExcel(wb);
+      if (!data.length) { showError('Nenhuma campanha encontrada.'); return; }
+      AppState.campaignsData = data;
+      AppState.capaData = collectCapaDataSafe();
+      var info = parseFileName(AppState.originalFileName);
+      $('clienteName').textContent = info.cliente;
+      showFileSummary();
+      showReview();
+      saveAppState();
+    } catch(err) {
+      console.error(err);
+      showError('Erro ao processar o arquivo. Verifique se é uma exportação válida do Meta Ads.');
+    }
+  };
+  // CORRIGIDO: tratamento de erro na leitura do arquivo
+  reader.onerror = function() {
+    showError('Não foi possível ler o arquivo. Ele pode estar corrompido ou bloqueado.');
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function handleFile(event) {
+  var file = event.target.files[0];
+  if (!file) return;
+  processFile(file);
+  event.target.value = '';
+}
+
+function showError(msg) {
+  $('errorText').textContent = msg;
+  $('errorMsg').style.display = 'flex';
+  if ($('classificationBanner')) $('classificationBanner').style.display = 'none';
+}
+
+// ======================================================
+// Tela de revisão
+// ======================================================
+function showReview() {
+  $('uploadArea').style.display = 'none';
+  $('reviewArea').style.display = 'block';
+  var tbody = $('reviewBody');
+  tbody.innerHTML = '';
+  for (var i = 0; i < AppState.campaignsData.length; i++) {
+    var row = AppState.campaignsData[i];
+    var options = '';
+    for (var oi = 0; oi < OBJ_OPTIONS.length; oi++) {
+      var opt = OBJ_OPTIONS[oi];
+      options += '<option value="'+opt+'" '+(opt===row.objective?'selected':'')+'>'+OBJ_LABELS[opt]+'</option>';
+    }
+    tbody.innerHTML += '<tr><td class="review-name">'+row.name+'</td><td class="review-format">'+row.format+'</td><td><span class="badge '+(OBJ_BADGE[row.objective]||'badge-unknown')+'" id="badge-'+i+'">'+(OBJ_LABELS[row.objective]||row.objective)+'</span></td><td><select class="obj-select" data-idx="'+i+'" onchange="updateObjective(this)">'+options+'</select></td></tr>';
+  }
+  updateStats();
+  setCurrentStep(2);
+  showFileSummary();
+  $('headerBtns').style.display = 'flex';
+  $('reportArea').style.display = 'none';
+  $('capaArea').style.display = 'none';
+  $('errorMsg').style.display = 'none';
+  saveAppState();
+}
+
+function updateObjective(select) {
+  var index = parseInt(select.dataset.idx, 10);
+  var objective = select.value;
+  AppState.campaignsData[index].objective = objective;
+  var badge = $('badge-'+index);
+  badge.className = 'badge '+(OBJ_BADGE[objective]||'badge-unknown');
+  badge.textContent = OBJ_LABELS[objective] || objective;
+  updateStats();
+  saveAppState();
+}
+
+function updateStats() {
+  var counts = {};
+  for (var i = 0; i < AppState.campaignsData.length; i++) {
+    var objective = AppState.campaignsData[i].objective;
+    counts[objective] = (counts[objective]||0)+1;
+  }
+  var el = $('reviewStats');
+  el.innerHTML = '';
+  for (var key in counts) {
+    el.innerHTML += '<div class="stat-chip '+(OBJ_BADGE[key]||'badge-unknown')+'">'+(OBJ_LABELS[key]||key)+': '+counts[key]+'</div>';
+  }
+}
+
+// ======================================================
+// Tela da capa
+// ======================================================
+function fillCapaInputs(data) {
+  var d = data || {}, fb = d.fb || {}, ig = d.ig || {};
+  var valuesById = {
+    fb_seguidores:fb.seguidores||'',fb_seg_anterior:fb.segAnterior||'',fb_homens:fb.homens||'',
+    fb_mulheres:fb.mulheres||'',fb_faixa:fb.faixa||'',fb_alcancadas:fb.alcancadas||'',fb_visitas:fb.visitas||'',
+    ig_seguidores:ig.seguidores||'',ig_seg_anterior:ig.segAnterior||'',ig_homens:ig.homens||'',
+    ig_mulheres:ig.mulheres||'',ig_faixa:ig.faixa||'',ig_alcancadas:ig.alcancadas||'',ig_visitas:ig.visitas||''
+  };
+  Object.keys(valuesById).forEach(function(id){ var input=$(id); if(input) input.value=valuesById[id]; });
+}
+
+function bindCapaInputs() {
+  if (capaInputsBound) return;
+  capaInputsBound = true;
+  CAPA_INPUT_IDS.forEach(function(id) {
+    var input = $(id);
+    if (!input) return;
+    input.addEventListener('input', function() {
+      AppState.capaData = collectCapaData();
+      saveAppState();
+      if ($('capaPreview').style.display === 'block') updateCapaPreview();
+    });
+  });
+}
+
+function goToCapa() {
+  var hasUndefined = AppState.campaignsData.some(function(row){return row.objective === 'indefinido';});
+  if (hasUndefined && !confirm('Existem campanhas sem objetivo definido. Continuar?')) return;
+  $('reviewArea').style.display = 'none';
+  $('capaArea').style.display = 'block';
+  var info = parseFileName(AppState.originalFileName);
+  $('capaClienteName').textContent = info.cliente+' - '+(info.mes||'')+' '+(info.ano||'');
+  fillCapaInputs(AppState.capaData);
+  bindCapaInputs();
+  setCurrentStep(3);
+  saveAppState();
+}
+
+function backToReview() {
+  $('capaArea').style.display = 'none';
+  $('capaPreview').style.display = 'none';
+  $('reviewArea').style.display = 'block';
+  $('btnPreviewCapa').textContent = '👁 Visualizar Capa';
+  setCurrentStep(2);
+  saveAppState();
+}
+
+function toggleCapaPreview() {
+  var preview = $('capaPreview');
+  var button = $('btnPreviewCapa');
+  if (preview.style.display === 'block') {
+    preview.style.display = 'none';
+    button.textContent = '👁 Visualizar Capa';
+  } else {
+    updateCapaPreview();
+    preview.style.display = 'block';
+    button.textContent = '🙈 Ocultar Preview';
+    preview.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+  saveAppState();
+}
+
+function updateCapaPreview() {
+  var data = collectCapaData();
+  var info = parseFileName(AppState.originalFileName);
+  $('prev_titulo').textContent = (info.cliente||'CLIENTE')+' - '+(info.mes||'MÊS')+' - '+(info.ano||'ANO');
+  $('prev_fb_seg').textContent = 'Total de '+(data.fb.seguidores||'—')+' seguidores';
+  $('prev_fb_seg_ant').textContent = (data.fb.segAnterior||'—')+' seguidores no mês anterior';
+  $('prev_fb_h').textContent = (data.fb.homens||'—')+' Homens';
+  $('prev_fb_m').textContent = (data.fb.mulheres||'—')+' Mulheres';
+  $('prev_fb_faixa').textContent = data.fb.faixa||'—';
+  $('prev_fb_alc').textContent = data.fb.alcancadas||'—';
+  $('prev_fb_vis').textContent = data.fb.visitas||'—';
+  $('prev_ig_seg').textContent = 'Total de '+(data.ig.seguidores||'—')+' seguidores';
+  $('prev_ig_seg_ant').textContent = (data.ig.segAnterior||'—')+' seguidores no mês anterior';
+  $('prev_ig_h').textContent = (data.ig.homens||'—')+' Homens';
+  $('prev_ig_m').textContent = (data.ig.mulheres||'—')+' Mulheres';
+  $('prev_ig_faixa').textContent = data.ig.faixa||'—';
+  $('prev_ig_alc').textContent = data.ig.alcancadas||'—';
+  $('prev_ig_vis').textContent = data.ig.visitas||'—';
+}
+
+function collectCapaData() {
+  return {
+    fb:{seguidores:$('fb_seguidores').value,segAnterior:$('fb_seg_anterior').value,homens:$('fb_homens').value,mulheres:$('fb_mulheres').value,faixa:$('fb_faixa').value,alcancadas:$('fb_alcancadas').value,visitas:$('fb_visitas').value},
+    ig:{seguidores:$('ig_seguidores').value,segAnterior:$('ig_seg_anterior').value,homens:$('ig_homens').value,mulheres:$('ig_mulheres').value,faixa:$('ig_faixa').value,alcancadas:$('ig_alcancadas').value,visitas:$('ig_visitas').value}
+  };
+}
+
+function confirmAndRender() {
+  AppState.capaData = collectCapaData();
+  $('capaArea').style.display = 'none';
+  $('capaPreview').style.display = 'none';
+  renderReport(AppState.campaignsData);
+  setCurrentStep(4);
+  saveAppState();
+}
+
+// ======================================================
+// Relatório
+// ======================================================
+function renderReport(data) {
+  var tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+  var lastDateKey = '';
+  for (var idx = 0; idx < data.length; idx++) {
+    var r = data[idx];
+    var o = r.objective;
+    var isReels = /^Reels/i.test(o);
+    var curDate = extractDateFromName(r.name);
+    var curDateKey = curDate ? curDate.getTime() : 'none';
+    if (idx > 0 && curDateKey !== lastDateKey) {
+      tbody.innerHTML += '<tr><td colspan="17" style="background:#fff;border:none;height:16px"></td></tr>';
+    }
+    lastDateKey = curDateKey;
+    // Alcance — sempre preenchido
+    var colReach = fmtNum(r.reach);
+    // Engajamento
+    var colEng = (o==='Eng'||o==='EngLink'||o==='TrafLink'||o==='ReelsEng'||o==='ReelsEngLink'||o==='ReelsTrafLink'||o==='ReelsEngWhats'||o==='ReelsTrafWhats') ? fmtNum(r.eng) : '-';
+    // Cliques no link
+    var colLinks = (o==='EngLink'||o==='TrafLink'||o==='ReelsEngLink'||o==='ReelsTrafLink') ? fmtNum(r.links) : '-';
+    // ThruPlay (visualização)
+    var colViews = isReels ? fmtNum(r.views) : '-';
+    // CPM
+    var colCPM = (o==='Alc') ? fmtBRL(r.cpm) : '-';
+    // Custo por clique
+    var colCPC = (o==='EngLink'||o==='TrafLink'||o==='ReelsEngLink'||o==='ReelsTrafLink') ? fmtBRL(r.cpc) : '-';
+    // Custo por ThruPlay
+    var colThru = (o==='ReelsAlc'||o==='ReelsEng'||o==='ReelsEngLink'||o==='ReelsTrafLink') ? fmtBRL(r.cThru) : '-';
+    // Custo por interação
+    var colCInt = (o==='Eng'||o==='ReelsEng') ? fmtBRL(r.cInt) : '-';
+    // Custo por conversa
+    var colCConv = (o==='EngWhats'||o==='TrafWhats'||o==='ReelsEngWhats'||o==='ReelsTrafWhats') ? fmtBRL(r.cConv) : '-';
+    // Conversas iniciadas
+    var colConv = (o==='EngWhats'||o==='TrafWhats'||o==='ReelsEngWhats'||o==='ReelsTrafWhats') ? fmtNum(r.conv) : '-';
+    tbody.innerHTML += '<tr><td>'+titleCase(r.displayName||r.name)+'</td><td>'+r.format+'</td><td>'+(r.validity||'-')+'</td><td>'+fmtBRL(r.budget)+'</td><td>'+fmtBRL(r.spent)+'</td><td>'+colReach+'</td><td>'+colEng+'</td><td>'+colLinks+'</td><td>'+colViews+'</td><td>'+colCPM+'</td><td>'+colCPC+'</td><td>'+colThru+'</td><td>'+colCInt+'</td><td>'+colCConv+'</td><td>-</td><td>-</td><td>'+colConv+'</td></tr>';
+  }
+  document.getElementById('reportArea').style.display = 'block';
+  document.getElementById('headerBtns').style.display = 'flex';
+  // CORRIGIDO: usa AppState.originalFileName em vez da variável global solta
+  var info = parseFileName(AppState.originalFileName);
+  document.getElementById('clienteNameReport').textContent = info.cliente;
+  saveAppState();
+}
+
+function resetView() {
+  AppState.campaignsData = [];
+  AppState.originalFileName = '';
+  AppState.capaData = {fb:{},ig:{}};
+  $('uploadArea').style.display = 'block';
+  $('reviewArea').style.display = 'none';
+  $('capaArea').style.display = 'none';
+  $('capaPreview').style.display = 'none';
+  $('reportArea').style.display = 'none';
+  $('headerBtns').style.display = 'none';
+  $('errorMsg').style.display = 'none';
+  fillCapaInputs(AppState.capaData);
+  var previewButton = $('btnPreviewCapa');
+  if (previewButton) previewButton.textContent = '👁 Visualizar Capa';
+  setCurrentStep(1);
+  if ($('fileSummary')) $('fileSummary').style.display = 'none';
+  if ($('classificationBanner')) $('classificationBanner').style.display = 'none';
+  clearAppState();
+}
+
+// ======================================================
+// Nome do arquivo e exportação
+// ======================================================
+function parseFileName(filename) {
+  var base = filename.replace(/\.[^.]+$/,'').trim();
+  var MESES = {'01':'Janeiro','02':'Fevereiro','03':'Março','04':'Abril','05':'Maio','06':'Junho','07':'Julho','08':'Agosto','09':'Setembro','10':'Outubro','11':'Novembro','12':'Dezembro','jan':'Janeiro','fev':'Fevereiro','mar':'Março','abr':'Abril','mai':'Maio','jun':'Junho','jul':'Julho','ago':'Agosto','set':'Setembro','out':'Outubro','nov':'Novembro','dez':'Dezembro','janeiro':'Janeiro','fevereiro':'Fevereiro','março':'Março','marco':'Março','abril':'Abril','maio':'Maio','junho':'Junho','julho':'Julho','agosto':'Agosto','setembro':'Setembro','outubro':'Outubro','novembro':'Novembro','dezembro':'Dezembro'};
+  var parts = base.split(/\s*[-–]\s*/).map(function(p){return p.trim();}).filter(Boolean);
+  var cliente='',mes='',ano='';
+  parts.forEach(function(p) {
+    var pl = p.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    if (/^\d{4}$/.test(p)){ano=p;return;}
+    if (MESES[pl]){mes=MESES[pl];return;}
+    if (MESES[p.toLowerCase()]){mes=MESES[p.toLowerCase()];return;}
+    if (!cliente) cliente=p;
+  });
+  if (!mes||!ano) parts.forEach(function(p) {
+    var pl = p.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    for (var k in MESES) { if (pl.includes(k)&&k.length>2){mes=MESES[k];break;} }
+    var ym = p.match(/\b(20\d{2})\b/);
+    if (ym) ano=ym[1];
+  });
+  if (!cliente) cliente=parts[0]||'Cliente';
+  if (!ano) ano=new Date().getFullYear().toString();
+  return {cliente:cliente,mes:mes,ano:ano};
+}
+
+var ReportExporter = {
+  exportExcel: async function() {
+    if (!AppState.campaignsData.length) return;
+    var btn = document.getElementById('btnExcel');
+    btn.textContent = 'Gerando...';
+    btn.disabled = true;
+    // CORRIGIDO: usa AppState em vez de variáveis globais soltas
+    var info = parseFileName(AppState.originalFileName);
+    var cd = AppState.capaData;
+    var C={orange:'FFFF9900',gold:'FFFBBC04',gray1:'FFB7B7B7',white:'FFFFFFFF',black:'FF000000',dark:'FF222526',cream:'FFF5F3F0'};
+    var bk={style:'thin',color:{argb:C.black}};
+    var bAll={top:bk,bottom:bk,left:bk,right:bk};
+    var fl=function(a){return{type:'pattern',pattern:'solid',fgColor:{argb:a}};};
+    var fn=function(b,s,a,n){return{bold:!!b,size:s||10,color:{argb:a||C.black},name:n||'Arial'};};
+    var al=function(h,v,w){return{horizontal:h||'center',vertical:v||'top',wrapText:!!w};};
+    var BRL='R$\\ #,##0.00', NUM='#,##0';
+    var wb = new ExcelJS.Workbook();
+    // ═══ ABA 1: CAPA ═══
+    var wsCapa = wb.addWorksheet('Capa');
+    var titulo = info.cliente+' - '+(info.mes||'')+' - '+(info.ano||'');
+    var G = fl(C.gold);
+    wsCapa.columns=[{width:2},{width:2},{width:22},{width:2},{width:16},{width:16},{width:2},{width:4},{width:2},{width:22},{width:2},{width:16},{width:16},{width:2},{width:2},{width:2}];
+    for (var ri=1;ri<=16;ri++){var rw=wsCapa.getRow(ri);for(var ci=1;ci<=16;ci++){rw.getCell(ci).fill=G;}}
+    // ROW 1: Título
+    wsCapa.mergeCells('A1:P1');wsCapa.getRow(1).height=52;
+    var cTit=wsCapa.getCell('A1');cTit.value=titulo;cTit.fill=G;cTit.font=fn(true,26,C.white,'Arial');cTit.alignment=al('center','middle');
+    // ROW 2
+    wsCapa.getRow(2).height=10;
+    // ROW 3: Labels plataforma
+    wsCapa.getRow(3).height=24;
+    wsCapa.mergeCells('C3:G3');wsCapa.mergeCells('J3:N3');
+    var cFB=wsCapa.getCell('C3');cFB.value='FACEBOOK';cFB.fill=G;cFB.font=fn(true,13,C.black,'Arial');cFB.alignment=al('center','middle');
+    var cIG=wsCapa.getCell('J3');cIG.value='INSTAGRAM';cIG.fill=G;cIG.font=fn(true,13,C.black,'Arial');cIG.alignment=al('center','middle');
+    // ROW 4
+    wsCapa.getRow(4).height=6;
+    // ROW 5-6: Total seguidores
+    wsCapa.getRow(5).height=32;wsCapa.getRow(6).height=32;
+    wsCapa.mergeCells('C5:G6');wsCapa.mergeCells('J5:N6');
+    var cFBSeg=wsCapa.getCell('C5');cFBSeg.value='Total de '+cd.fb.seguidores+' seguidores';cFBSeg.fill=G;cFBSeg.font=fn(false,20,C.black,'Arial');cFBSeg.alignment=al('center','middle',true);
+    var cIGSeg=wsCapa.getCell('J5');cIGSeg.value='Total de '+cd.ig.seguidores+' seguidores';cIGSeg.fill=G;cIGSeg.font=fn(false,20,C.black,'Arial');cIGSeg.alignment=al('center','middle',true);
+    // ROW 7: Seg anterior
+    wsCapa.getRow(7).height=22;
+    wsCapa.mergeCells('C7:G7');wsCapa.mergeCells('J7:N7');
+    var cFBSA=wsCapa.getCell('C7');cFBSA.value=cd.fb.segAnterior+' seguidores no mês anterior';cFBSA.fill=G;cFBSA.font=fn(true,13,C.black,'Arial');cFBSA.alignment=al('center','middle',true);
+    var cIGSA=wsCapa.getCell('J7');cIGSA.value=cd.ig.segAnterior+' seguidores no mês anterior';cIGSA.fill=G;cIGSA.font=fn(true,13,C.black,'Arial');cIGSA.alignment=al('center','middle',true);
+    // ROW 8
+    wsCapa.getRow(8).height=8;
+    // ROW 9-10: Gênero
+    var pct=function(v){var s=String(v||'').trim();return s?s+(s.slice(-1)==='%'?'':' %'):'';};
+    wsCapa.getRow(9).height=30;wsCapa.getRow(10).height=30;
+    wsCapa.mergeCells('C9:D10');wsCapa.mergeCells('E9:F10');wsCapa.mergeCells('J9:K10');wsCapa.mergeCells('L9:M10');
+    var cFBH=wsCapa.getCell('C9');cFBH.value=pct(cd.fb.homens)+' Homens';cFBH.fill=G;cFBH.font=fn(true,16,C.black,'Arial');cFBH.alignment=al('center','middle');
+    var cFBM=wsCapa.getCell('E9');cFBM.value=pct(cd.fb.mulheres)+' Mulheres';cFBM.fill=G;cFBM.font=fn(true,16,C.black,'Arial');cFBM.alignment=al('center','middle');
+    var cIGH=wsCapa.getCell('J9');cIGH.value=pct(cd.ig.homens)+' Homens';cIGH.fill=G;cIGH.font=fn(true,16,C.black,'Arial');cIGH.alignment=al('center','middle');
+    var cIGM=wsCapa.getCell('L9');cIGM.value=pct(cd.ig.mulheres)+' Mulheres';cIGM.fill=G;cIGM.font=fn(true,16,C.black,'Arial');cIGM.alignment=al('center','middle');
+    // ROW 11
+    wsCapa.getRow(11).height=8;
+    // ROW 12-13: Valores
+    wsCapa.getRow(12).height=34;wsCapa.getRow(13).height=34;
+    wsCapa.mergeCells('C12:D13');wsCapa.mergeCells('E12:E13');wsCapa.mergeCells('F12:F13');
+    wsCapa.mergeCells('J12:K13');wsCapa.mergeCells('L12:L13');wsCapa.mergeCells('M12:M13');
+    var cFBF=wsCapa.getCell('C12');cFBF.value=cd.fb.faixa;cFBF.fill=G;cFBF.font=fn(true,22,C.black,'Arial');cFBF.alignment=al('center','middle');
+    var cFBA=wsCapa.getCell('E12');cFBA.value=cd.fb.alcancadas;cFBA.fill=G;cFBA.font=fn(true,22,C.black,'Arial');cFBA.alignment=al('center','middle');
+    var cFBV=wsCapa.getCell('F12');cFBV.value=cd.fb.visitas;cFBV.fill=G;cFBV.font=fn(true,22,C.black,'Arial');cFBV.alignment=al('center','middle');
+    var cIGF=wsCapa.getCell('J12');cIGF.value=cd.ig.faixa;cIGF.fill=G;cIGF.font=fn(true,22,C.black,'Arial');cIGF.alignment=al('center','middle');
+    var cIGA=wsCapa.getCell('L12');cIGA.value=cd.ig.alcancadas;cIGA.fill=G;cIGA.font=fn(true,22,C.black,'Arial');cIGA.alignment=al('center','middle');
+    var cIGV=wsCapa.getCell('M12');cIGV.value=cd.ig.visitas;cIGV.fill=G;cIGV.font=fn(true,22,C.black,'Arial');cIGV.alignment=al('center','middle');
+    // ROW 14: Labels
+    wsCapa.getRow(14).height=20;
+    wsCapa.mergeCells('C14:D14');
+    var lFBF=wsCapa.getCell('C14');lFBF.value='FAIXA ETÁRIA';lFBF.fill=G;lFBF.font=fn(false,11,C.black,'Arial');lFBF.alignment=al('center','middle');
+    var lFBA=wsCapa.getCell('E14');lFBA.value='CONTAS ALCANÇADAS';lFBA.fill=G;lFBA.font=fn(false,11,C.black,'Arial');lFBA.alignment=al('center','middle',true);
+    var lFBV=wsCapa.getCell('F14');lFBV.value='VISITAS À PÁGINA';lFBV.fill=G;lFBV.font=fn(false,11,C.black,'Arial');lFBV.alignment=al('center','middle',true);
+    wsCapa.mergeCells('J14:K14');
+    var lIGF=wsCapa.getCell('J14');lIGF.value='FAIXA ETÁRIA';lIGF.fill=G;lIGF.font=fn(false,11,C.black,'Arial');lIGF.alignment=al('center','middle');
+    var lIGA=wsCapa.getCell('L14');lIGA.value='CONTAS ALCANÇADAS';lIGA.fill=G;lIGA.font=fn(false,11,C.black,'Arial');lIGA.alignment=al('center','middle',true);
+    var lIGV=wsCapa.getCell('M14');lIGV.value='VISITAS AO PERFIL';lIGV.fill=G;lIGV.font=fn(false,11,C.black,'Arial');lIGV.alignment=al('center','middle',true);
+    wsCapa.getRow(15).height=10;wsCapa.getRow(16).height=10;
+    // ═══ ABA 2: RELATÓRIO ═══
+    var ws = wb.addWorksheet('Relatório');
+    ws.columns=[{width:24},{width:14},{width:15},{width:14},{width:14},{width:13},{width:14},{width:14},{width:18},{width:20},{width:22},{width:20},{width:20},{width:20},{width:12},{width:12},{width:18}];
+    ws.addRow(['AÇÕES MENSAIS']);ws.mergeCells('A1:Q1');
+    var r1=ws.getCell('A1');r1.value='AÇÕES MENSAIS';r1.fill=fl(C.orange);r1.font=fn(true,15,C.white);r1.alignment=al('center','middle');r1.border={bottom:bk};ws.getRow(1).height=32;
+    var HDR=['NOME DA AÇÃO','FORMATO','VALIDADE','INVESTIMENTO','VALOR GASTO','ALCANCE','ENGAJAMENTO','CLIQUES NO LINK','VISUALIZAÇÃO (THRUPLAY)','CUSTO POR 1.000 PESSOAS','CUSTO POR CLIQUES NO LINK','CUSTO POR THRUPLAY','CUSTO POR INTERAÇÃO','CUSTO POR CONVERSA','FILTRO','CIDADE','CONVERSAS INICIADAS'];
+    ws.addRow(HDR);ws.getRow(2).height=20;
+    HDR.forEach(function(_,ci){var cell=ws.getRow(2).getCell(ci+1);cell.fill=fl(C.gray1);cell.font=fn(true,10,C.black,'Century Gothic');cell.alignment=al('center','middle',true);cell.border=bAll;});
+    var lastDateKeyXl='';
+    AppState.campaignsData.forEach(function(r) {
+      var curDate=extractDateFromName(r.name);
+      var curDateKey=curDate?curDate.getTime():'none';
+      if (lastDateKeyXl!==''&&curDateKey!==lastDateKeyXl) {
+        var rBlank=ws.addRow(Array(17).fill(''));rBlank.height=12;
+        for (var ci=1;ci<=17;ci++){rBlank.getCell(ci).fill=fl('FFF0F0F0');rBlank.getCell(ci).border={top:bk,bottom:bk};}
+      }
+      lastDateKeyXl=curDateKey;
+      var o=r.objective;
+      var isReelsXl = /^Reels/i.test(o);
+      var vals=[
+        titleCase(r.displayName||r.name),
+        r.format,
+        r.validity||'-',
+        r.budget>0?r.budget:'-',
+        r.spent>0?r.spent:'-',
+        r.reach>0?r.reach:'-',
+        // Engajamento
+        (o==='Eng'||o==='EngLink'||o==='TrafLink'||o==='ReelsEng'||o==='ReelsEngLink'||o==='ReelsTrafLink'||o==='ReelsEngWhats'||o==='ReelsTrafWhats')&&r.eng>0?r.eng:'-',
+        // Cliques no link
+        (o==='EngLink'||o==='TrafLink'||o==='ReelsEngLink'||o==='ReelsTrafLink')&&r.links>0?r.links:'-',
+        // ThruPlay
+        isReelsXl&&r.views>0?r.views:'-',
+        // CPM
+        o==='Alc'&&r.cpm>0?r.cpm:'-',
+        // Custo por clique
+        (o==='EngLink'||o==='TrafLink'||o==='ReelsEngLink'||o==='ReelsTrafLink')&&r.cpc>0?r.cpc:'-',
+        // Custo por ThruPlay
+        (o==='ReelsAlc'||o==='ReelsEng'||o==='ReelsEngLink'||o==='ReelsTrafLink')&&r.cThru>0?r.cThru:'-',
+        // Custo por interação
+        (o==='Eng'||o==='ReelsEng')&&r.cInt>0?r.cInt:'-',
+        // Custo por conversa
+        (o==='EngWhats'||o==='TrafWhats'||o==='ReelsEngWhats'||o==='ReelsTrafWhats')&&r.cConv>0?r.cConv:'-',
+        '-','-',
+        // Conversas iniciadas
+        (o==='EngWhats'||o==='TrafWhats'||o==='ReelsEngWhats'||o==='ReelsTrafWhats')&&r.conv>0?r.conv:'-'
+      ];
+      var row=ws.addRow(vals);row.height=20;
+      vals.forEach(function(v,ci){
+        var cell=row.getCell(ci+1);
+        cell.fill=fl(C.white);cell.font=fn(false,10,C.black);
+        cell.alignment=ci===0?al('left','top',true):al('center','top');
+        cell.border=bAll;
+        if(typeof v==='number'){
+          if([3,4,9,10,11,12,13].includes(ci))cell.numFmt=BRL;
+          if([5,6,7,8,16].includes(ci))cell.numFmt=NUM;
+        }
+      });
+    });
+    var rE=ws.addRow(Array(17).fill(''));rE.height=20;for(var ci=1;ci<=17;ci++){rE.getCell(ci).fill=fl(C.white);rE.getCell(ci).border={};}
+    var rLT=ws.addRow(['RAIO-X DOS RESULTADOS - ENTENDA O QUE CADA INDICADOR MOSTRA']);
+    ws.mergeCells('A'+rLT.number+':I'+rLT.number);
+    var cLT=rLT.getCell(1);cLT.fill=fl(C.orange);cLT.font=fn(true,11,C.white,'Century Gothic');cLT.alignment=al('center','middle');rLT.height=20;
+    var legs=['Alcance: É o número de contas que a postagem alcançou. Ou seja, a quantidade de contas que receberam o post.','Engajamento: É o número de vezes que houve interação com a postagem de pessoas com maior probabilidade de interesse no produto ofertado. A plataforma analisa os perfis de pessoas que estejam procurando os produtos ofertados, e faz a entrega para estes perfis (sem filtro). Ou seja, a soma da quantidade de vezes que o post foi aberto, curtido, compartilhado, comentado por um público mais engajado.','Conversas iniciadas: Quantidade de conversas iniciadas no WhatsApp a partir do anúncio.','Visualização (ThruPlay): Número de vezes que o vídeo foi assistido por pelo menos 15 segundos ou até o fim, quando menor que esse tempo.','Cliques no link: Quantidade de cliques em links do anúncio para destinos externos, como site ou WhatsApp.'];
+    legs.forEach(function(txt){
+      var rL=ws.addRow([txt]);ws.mergeCells('A'+rL.number+':I'+rL.number);
+      var cL=rL.getCell(1);cL.fill=fl(C.white);cL.font=fn(false,10,C.dark);cL.alignment=al('left','top',true);cL.border={bottom:bk,right:bk};rL.height=24;
+    });
+    var rSep=ws.addRow(Array(9).fill(''));rSep.height=10;
+    for(var ci=1;ci<=9;ci++){rSep.getCell(ci).border={bottom:{style:'double',color:{argb:C.black}}};rSep.getCell(ci).fill=fl(C.white);}
+    var fnTxt='*Algumas colunas podem não ser preenchidas, pois variam de acordo com o tipo de impulsionamento e com as métricas disponíveis em cada campanha. Além disso, em alguns casos, a plataforma pode não utilizar toda a verba prevista, seja por limitação de público, concorrência no leilão de anúncios, baixo engajamento ou instabilidades na entrega. Por isso, o valor efetivamente considerado como consumido é o da coluna "Valor gasto".';
+    var rFn=ws.addRow([fnTxt]);ws.mergeCells('A'+rFn.number+':I'+rFn.number);
+    var cFn=rFn.getCell(1);cFn.fill=fl(C.white);cFn.font=fn(false,10,C.black,'Century Gothic');cFn.alignment=al('left','top',true);cFn.border={bottom:{style:'double',color:{argb:C.black}},right:{style:'double',color:{argb:C.black}}};rFn.height=50;
+    try {
+      var buf=await wb.xlsx.writeBuffer();
+      var blob=new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+      var url=URL.createObjectURL(blob);
+      var a=document.createElement('a');a.href=url;
+      a.download=['Relatório de impulsionamento',info.cliente,info.mes,info.ano].filter(Boolean).join(' - ')+'.xlsx';
+      document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+    } finally {
+      btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg> Baixar Excel';
+      btn.disabled=false;
+    }
+  }
+};
+
+// CORRIGIDO: apenas uma declaração de exportExcel
+function exportExcel() {
+  return ReportExporter.exportExcel();
+}
+
+// CORRIGIDO: usa AppState.capaData em vez de capaData global
+async function exportGoogleSheets() {
+  try {
+    if (!AppState.campaignsData.length) { alert('Nenhuma campanha carregada.'); return; }
+    var info = parseFileName(AppState.originalFileName || 'Cliente');
+    var payload = {
+      cliente: info.cliente || 'Cliente',
+      mes: info.mes || '',
+      ano: info.ano || '',
+      campaignsData: AppState.campaignsData,
+      capaData: AppState.capaData
+    };
+    var btn = document.getElementById('btnGoogleSheets');
+    if (btn) { btn.disabled=true; btn.textContent='Gerando Google Sheets...'; }
+    var response = await fetch('https://relatorio-impulsionamento-cre-dev.vercel.app/api/export-google-sheets',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    var result = await response.json();
+    if (!result.success) throw new Error(result.error || 'Falha ao gerar Google Sheets.');
+    window.open(result.url,'_blank');
+  } catch(error) {
+    console.error(error);
+    alert('Erro ao exportar para Google Sheets: '+error.message);
+  } finally {
+    var btn = document.getElementById('btnGoogleSheets');
+    if (btn) { btn.disabled=false; btn.textContent='Google Sheets'; }
+  }
+}
+
+function setClassifierConfigStatus(message, isError) {
+  var status = $('classifierConfigStatus');
+  if (!status) return;
+  status.textContent = message || '';
+  status.style.color = isError ? '#fca5a5' : '#d4d4d4';
+}
+
+function refreshClassifierConfigEditor() {
+  var input = $('classifierConfigInput');
+  if (!input) return;
+  input.value = CampaignClassifier.exportConfig();
+}
+
+function reclassifyCampaignData() {
+  if (!AppState.campaignsData || !AppState.campaignsData.length) return;
+  for (var i = 0; i < AppState.campaignsData.length; i++) {
+    var row = AppState.campaignsData[i];
+    row.format = detectFormat(row.name, row.adName || '');
+    row.objective = detectObjective(row.name, row.format);
+  }
+  sortCampaignRows(AppState.campaignsData);
+  if ($('reviewArea').style.display === 'block') { showReview(); return; }
+  if ($('reportArea').style.display === 'block') { renderReport(AppState.campaignsData); return; }
+  saveAppState();
+}
+
+function applyClassifierConfig() {
+  var input = $('classifierConfigInput');
+  if (!input) return;
+  try {
+    var parsed = JSON.parse(input.value);
+    CampaignClassifier.saveConfig(parsed);
+    refreshClassifierConfigEditor();
+    reclassifyCampaignData();
+    setClassifierConfigStatus('Configuração aplicada com sucesso.');
+  } catch(err) {
+    console.error(err);
+    setClassifierConfigStatus('JSON inválido: '+err.message, true);
+  }
+}
+
+function resetClassifierConfig() {
+  CampaignClassifier.resetConfig();
+  refreshClassifierConfigEditor();
+  reclassifyCampaignData();
+  setClassifierConfigStatus('Configuração padrão restaurada.');
+}
+
+function downloadClassifierConfig() {
+  try {
+    var blob = new Blob([CampaignClassifier.exportConfig()],{type:'application/json;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');a.href=url;a.download='campaign-classifier-config.json';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+    setClassifierConfigStatus('Arquivo JSON baixado.');
+  } catch(err) {
+    console.error(err);
+    setClassifierConfigStatus('Não foi possível baixar o JSON.', true);
+  }
+}
+
+// ======================================================
+// Restauração de sessão
+// ======================================================
+function restoreAppState() {
+  bindCapaInputs();
+  var saved = loadAppState();
+  if (!saved || !saved.campaignsData || !saved.campaignsData.length) return;
+  AppState.campaignsData = saved.campaignsData;
+  AppState.originalFileName = saved.originalFileName || '';
+  AppState.capaData = saved.capaData || {fb:{},ig:{}};
+  fillCapaInputs(AppState.capaData);
+  var info = parseFileName(AppState.originalFileName || 'Cliente');
+  $('clienteName').textContent = info.cliente;
+  showFileSummary();
+  showReview();
+  if (saved.currentView === 'capa' || saved.currentView === 'report') {
+    goToCapa();
+    fillCapaInputs(AppState.capaData);
+    if (saved.previewVisible) {
+      updateCapaPreview();
+      $('capaPreview').style.display = 'block';
+      $('btnPreviewCapa').textContent = '🙈 Ocultar Preview';
+    }
+  }
+  if (saved.currentView === 'report') {
+    AppState.capaData = collectCapaData();
+    $('capaArea').style.display = 'none';
+    $('capaPreview').style.display = 'none';
+    renderReport(AppState.campaignsData);
+    setCurrentStep(4);
+  }
+  saveAppState();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Limpa config de versão antiga se existir
+  try { localStorage.removeItem('relatorios_ads_classifier_config_v1'); } catch(e) {}
+  try { localStorage.removeItem('relatorios_ads_classifier_config_v2'); } catch(e) {}
+  try { localStorage.removeItem('relatorios_ads_classifier_config_v3'); } catch(e) {}
+  CampaignClassifier.ensureConfig();
+  refreshClassifierConfigEditor();
+  bindCapaInputs();
+  setupUploadDropzone();
+  setCurrentStep(1);
+  restoreAppState();
+});
+
+</script>
+<footer>Relatório de Impulsionamento • v1.2-dev</footer>
+</body>
+</html>
