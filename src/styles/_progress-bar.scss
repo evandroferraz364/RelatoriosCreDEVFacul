@@ -1,0 +1,76 @@
+/**
+ * Estilos do ProgressBar
+ */
+
+@import '../styles/variables';
+
+.progress-bar {
+  width: 100%;
+  margin-bottom: $spacing-xl;
+
+  &__steps {
+    display: flex;
+    gap: $spacing-md;
+    flex-wrap: wrap;
+  }
+}
+
+.progress-step {
+  flex: 1;
+  min-width: 180px;
+  background: #171717;
+  border: 1px solid #2f2f2f;
+  border-radius: $radius-xl;
+  padding: $spacing-lg;
+  opacity: 0.55;
+  transition: all $transition-base;
+  cursor: pointer;
+
+  &--active {
+    opacity: 1;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 1px rgba($color-primary, 0.25);
+  }
+
+  &--done {
+    opacity: 1;
+    border-color: $color-success;
+  }
+
+  &__num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #262626;
+    color: $color-text-primary;
+    font-size: $font-size-sm;
+    font-weight: 700;
+    margin-bottom: $spacing-md;
+  }
+
+  &--active &__num {
+    background: $color-primary;
+    color: $color-text-primary;
+  }
+
+  &--done &__num {
+    background: $color-success;
+    color: $color-text-primary;
+  }
+
+  &__title {
+    font-size: $font-size-base;
+    font-weight: 700;
+    color: $color-text-primary;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__desc {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    line-height: 1.4;
+  }
+}
