@@ -1,0 +1,123 @@
+/**
+ * Estilos do AppManager e layout geral
+ */
+
+@import 'variables';
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: $color-bg-dark;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: $z-header;
+  background: $color-bg-dark;
+  border-bottom: 1px solid #262626;
+  padding: $spacing-lg $spacing-xl;
+  height: 56px;
+  display: flex;
+  align-items: center;
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: $color-text-primary;
+      margin: 0;
+
+      span {
+        color: $color-primary;
+      }
+    }
+  }
+}
+
+.app-main {
+  flex: 1;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: $spacing-2xl $spacing-xl;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-area {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.app-footer {
+  background: $color-bg-darker;
+  border-top: 1px solid #262626;
+  padding: $spacing-lg $spacing-xl;
+  text-align: center;
+  color: $color-text-muted;
+  font-size: $font-size-sm;
+
+  p {
+    margin: 0;
+  }
+}
+
+.report-placeholder {
+  background: $color-bg-input;
+  border: 2px dashed $color-bg-border;
+  border-radius: $radius-xl;
+  padding: $spacing-2xl;
+  text-align: center;
+  color: $color-text-secondary;
+
+  h2 {
+    color: $color-primary;
+    margin-bottom: $spacing-lg;
+  }
+
+  p {
+    color: $color-text-muted;
+    margin-bottom: $spacing-lg;
+  }
+
+  button {
+    @extend .btn;
+    @extend .btn--primary;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 700px) {
+  .app-header {
+    padding: $spacing-md $spacing-lg;
+    height: auto;
+
+    &__logo h1 {
+      font-size: 16px;
+    }
+  }
+
+  .app-main {
+    padding: $spacing-lg $spacing-md;
+  }
+
+  .app-footer {
+    padding: $spacing-md $spacing-lg;
+  }
+}
